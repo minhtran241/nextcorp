@@ -18,6 +18,7 @@ export const authController = (app: Elysia) => {
         jwt({
             name: 'jwt',
             secret: JWT_SECRET,
+            alg: 'HS256',
         })
     );
 
@@ -63,7 +64,10 @@ export const authController = (app: Elysia) => {
             if (!isPasswordMatch) {
                 throw new APIError(401, 'Password incorrect');
             }
-            const token = await jwt.sign({ username });
+            const token = await jwt.sign({
+                username: user.username,
+                isAdmin: user.isAdmin,
+            });
             // update last login
             updateLastLogin(username);
             const response: ApiResponse = {
@@ -72,7 +76,6 @@ export const authController = (app: Elysia) => {
                 data: {
                     token,
                     username: user.username,
-                    isAdmin: user.isAdmin,
                     email: user.email,
                     avatar: user.avatar,
                     createdAt: user.created_at,
@@ -100,14 +103,16 @@ export const authController = (app: Elysia) => {
             const hashedPass = await Bun.password.hash(password);
             const lastLogin = new Date();
             await sql`INSERT INTO public.users (username, password, email, avatar, last_login) VALUES (${username}, ${hashedPass}, ${email}, ${avatar}, ${lastLogin})`;
-            const token = await jwt.sign({ username });
+            const token = await jwt.sign({
+                username,
+                isAdmin: false,
+            });
             const response: ApiResponse = {
                 status: 201,
                 message: 'User created',
                 data: {
                     token,
                     username,
-                    isAdmin: false,
                     email,
                     avatar,
                     createdAt: new Date(),

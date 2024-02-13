@@ -4,13 +4,13 @@ import ApiResponse from './types/APIResponse';
 import APIError from './errors/APIError';
 
 const app = new Elysia();
-const PORT = 8080;
+const API_PORT = parseInt(process.env.API_PORT || '8080');
 
 app.onError(({ code, error, set }) => {
     if (error instanceof APIError) {
-        set.status = error.status;
-        const res: ApiResponse<string> = {
-            status: error.status,
+        set.status = error.statusCode;
+        const res: ApiResponse = {
+            status: error.statusCode,
             message: error.message,
             timestamp: new Date(),
         };
@@ -30,7 +30,7 @@ app.onError(({ code, error, set }) => {
             set.status = 500;
             break;
     }
-    const res: ApiResponse<string> = {
+    const res: ApiResponse = {
         status: set.status,
         message: error.message,
         timestamp: new Date(),
@@ -40,8 +40,8 @@ app.onError(({ code, error, set }) => {
 
 app.use(authController);
 
-app.listen(PORT, () => {
-    console.log(`🦊 Elysia is running at ${app.server?.hostname}:${PORT}`);
+app.listen(API_PORT, () => {
+    console.log(`🦊 Elysia is running at ${app.server?.hostname}:${API_PORT}`);
 });
 
 export default app;
