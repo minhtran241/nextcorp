@@ -1,6 +1,6 @@
-export default interface ApiResponse<T> {
+export default interface ApiResponse {
     status: number;
     message?: string;
-    data?: T;
+    data?: any;
     timestamp: Date;
 }
