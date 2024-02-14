@@ -1,9 +1,12 @@
 import { Elysia } from 'elysia';
 import { rateLimit } from 'elysia-rate-limit';
+import { cron } from '@elysiajs/cron';
+import { serverTiming } from '@elysiajs/server-timing';
 import { authController } from './controllers/auth';
 import ApiResponse from './types/APIResponse';
 import APIError from './errors/APIError';
 import { rateLimitExceeded } from './messages/failure';
+import { healthController } from './controllers/health';
 
 const app = new Elysia();
 const API_PORT = parseInt(process.env.API_PORT || '8080');
@@ -40,6 +43,7 @@ app.onError(({ code, error, set }) => {
     return res;
 });
 
+app.use(healthController);
 app.use(authController);
 
 app.use(
@@ -48,7 +52,25 @@ app.use(
         max: 100,
         responseMessage: rateLimitExceeded,
     })
-).listen(API_PORT, () => {
+);
+app.use(
+    cron({
+        name: 'heartbeat',
+        pattern: '*/10 * * * * *',
+        run() {
+            const systemInfo = {
+                cpu: process.cpuUsage(),
+                memory: process.memoryUsage(),
+                uptime: process.uptime(),
+                port: API_PORT,
+                heartbeat: new Date(),
+            };
+            console.log(systemInfo);
+        },
+    })
+);
+app.use(serverTiming());
+app.listen(API_PORT, () => {
     console.log(`🦊 Elysia is running at ${app.server?.hostname}:${API_PORT}`);
 });
 

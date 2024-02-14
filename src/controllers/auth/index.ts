@@ -72,8 +72,6 @@ export const authController = (app: Elysia) => {
                     username: user.username,
                     isAdmin: (user.isAdmin || 'false').toString(),
                 });
-                // update last login
-                updateLastLogin(username);
                 const response: ApiResponse = {
                     status: 200,
                     message: loginSuccess,
@@ -87,6 +85,8 @@ export const authController = (app: Elysia) => {
                     },
                     timestamp: new Date(),
                 };
+                // update last login
+                updateLastLogin(username);
                 return response;
             } catch (error: any) {
                 throw new APIError(
