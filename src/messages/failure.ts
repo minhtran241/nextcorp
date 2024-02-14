@@ -1,0 +1,11 @@
+export const loginFailed: string = 'Login failed';
+export const userNotFound: string = 'User not found';
+export const passwordIncorrect: string = 'Password incorrect';
+export const internalServerError: string = 'Internal server error';
+export const userExists: string = 'User already exists';
+export const tokenInvalid: string = 'Token invalid';
+export const tokenExpired: string = 'Token expired';
+export const tokenMissing: string = 'Token missing';
+export const tokenRevoked: string = 'Token revoked';
+export const tokenBlacklisted: string = 'Token blacklisted';
+export const rateLimitExceeded: string = 'Rate limit exceeded';
