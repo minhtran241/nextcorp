@@ -10,7 +10,7 @@ import {
     userOrEmailExists,
 } from '~messages/failure';
 import { QueryResult } from 'pg';
-import UserModel from '~types/user';
+import UserModel from '~types/User';
 
 interface RegisterPayload {
     username: string;
@@ -23,14 +23,12 @@ interface LoginPayload {
     password: string;
 }
 
-interface HandlerProps {
+interface AuthHandlerProps {
     jwt: any;
     body: any;
     setCookie: any;
 }
 
-// handle last login when user logs in (asynchronously) (need to optimize this later on)
-// In order to avoid the case that user requests to login multiple times in a short period of time, we need to use redis to store the last login time and check if the user has logged in within a certain period of time. If the user has logged in within a certain period of time, we will not update the last login time and return the last jwt token to the user.
 const updateLastLogin = async (username: string) => {
     const lastLogin = new Date();
     await pool.query(
@@ -44,28 +42,26 @@ export const authHandler = {
         jwt,
         body,
         setCookie,
-    }: HandlerProps): Promise<ApiResponse> => {
+    }: AuthHandlerProps): Promise<ApiResponse> => {
         try {
             const { username, password } = body as LoginPayload;
-            const users: QueryResult<UserModel> = await pool.query(
+            const { rows }: QueryResult<UserModel> = await pool.query(
                 'SELECT * FROM public.users WHERE username = $1',
                 [username]
             );
-            const user = users.rows[0];
+            const user = rows[0];
             if (!user) throw new APIError(404, userNotFound);
-
             const isPasswordMatch = await Bun.password.verify(
                 password,
                 user.password
             );
             if (!isPasswordMatch) throw new APIError(401, passwordIncorrect);
-
             const accessToken = await jwt.sign({
                 username: user.username,
                 role: user.is_admin ? 'admin' : 'user',
             });
             setCookie('access_token', accessToken, {
-                maxAge: 15 * 60, // 15 minutes
+                maxAge: 15 * 60,
                 path: '/',
             });
             const response: ApiResponse = {
@@ -81,8 +77,7 @@ export const authHandler = {
                 },
                 timestamp: new Date(),
             };
-            // update last login
-            updateLastLogin(username);
+            await updateLastLogin(username); // Move updateLastLogin inside try block
             return response;
         } catch (error: any) {
             throw new APIError(
@@ -96,29 +91,27 @@ export const authHandler = {
         jwt,
         body,
         setCookie,
-    }: HandlerProps): Promise<ApiResponse> => {
+    }: AuthHandlerProps): Promise<ApiResponse> => {
         try {
             const { username, password, email } = body as RegisterPayload;
-            // only allow unique username and email
-            const users: QueryResult<UserModel> = await pool.query(
+            const { rows }: QueryResult<UserModel> = await pool.query(
                 'SELECT * FROM public.users WHERE username = $1 OR email = $2',
                 [username, email]
             );
-            if (users.rows.length > 0) {
-                throw new APIError(409, userOrEmailExists);
-            }
+            if (rows.length > 0) throw new APIError(409, userOrEmailExists);
             const hashedPassword = await Bun.password.hash(password);
-            const newUser: QueryResult<UserModel> = await pool.query(
-                'INSERT INTO public.users (username, password, email, avatar, isadmin, last_login) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-                [username, hashedPassword, email, '', false, new Date()]
-            );
-            const user = newUser.rows[0];
+            const { rows: newUserRows }: QueryResult<UserModel> =
+                await pool.query(
+                    'INSERT INTO public.users (username, password, email, avatar, isadmin, last_login) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
+                    [username, hashedPassword, email, '', false, new Date()]
+                );
+            const user = newUserRows[0];
             const accessToken = await jwt.sign({
                 username: user.username,
                 role: user.is_admin ? 'admin' : 'user',
             });
             setCookie('access_token', accessToken, {
-                maxAge: 15 * 60, // 15 minutes
+                maxAge: 15 * 60,
                 path: '/',
             });
             const response: ApiResponse = {

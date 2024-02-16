@@ -9,3 +9,4 @@ export const tokenMissing: string = 'Token missing';
 export const tokenRevoked: string = 'Token revoked';
 export const tokenBlacklisted: string = 'Token blacklisted';
 export const rateLimitExceeded: string = 'Rate limit exceeded';
+export const badRequest: string = 'Bad request';

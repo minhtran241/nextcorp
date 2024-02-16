@@ -51,6 +51,7 @@ export const usersHandler = {
             if (user.rows.length === 0) {
                 throw new APIError(404, userNotFound);
             }
+            delete user.rows[0].password;
             return user.rows[0];
         } catch (error: any) {
             throw new APIError(
@@ -102,19 +103,11 @@ export const usersHandler = {
         }
     },
 
-    validateGetUser: t.Object({
-        username: t.String(),
-    }),
-
     validateCreateUser: t.Object({
         username: t.String(),
         password: t.String(),
         email: t.String(),
         avatar: t.String(),
         isAdmin: t.Boolean(),
-    }),
-
-    validateDeleteUser: t.Object({
-        username: t.String(),
     }),
 };

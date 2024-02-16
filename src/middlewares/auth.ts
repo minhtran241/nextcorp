@@ -1,16 +1,14 @@
+import { JWTPayloadSpec } from '@elysiajs/jwt';
 import APIError from '~errors/APIError';
+import MiddlewareFunction from '~types/MiddlewareFunction';
 
-export const isAuthenticated = async ({
-    bearer,
-    set,
-    cookie: { access_token },
-    jwt,
-}: {
-    bearer: any;
-    set: any;
-    cookie: { access_token: string };
-    jwt: any;
-}): Promise<void> => {
+export const isAuthenticated: MiddlewareFunction = async (context) => {
+    const {
+        bearer,
+        set,
+        cookie: { access_token },
+        jwt,
+    } = context;
     if (!bearer && !access_token) {
         set.status = 401;
         set.headers[
@@ -32,17 +30,13 @@ export const isAuthenticated = async ({
     }
 };
 
-export const isAdmin = async ({
-    bearer,
-    set,
-    cookie: { access_token },
-    jwt,
-}: {
-    bearer: string;
-    set: any;
-    cookie: { access_token: string };
-    jwt: any;
-}): Promise<void> => {
+export const isAdmin: MiddlewareFunction = async (context) => {
+    const {
+        bearer,
+        set,
+        cookie: { access_token },
+        jwt,
+    } = context;
     const token = bearer || access_token;
     const profile = await jwt.verify(token);
     if (profile.role !== 'admin') {

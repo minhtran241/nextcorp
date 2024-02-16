@@ -1,17 +1,19 @@
 import APIError from '~errors/APIError';
-import { internalServerError } from '~messages/failure';
+import { badRequest, internalServerError } from '~messages/failure';
 import pool from '~database/db';
 import Cursor from 'pg-cursor';
+import slugify from 'slugify';
+import { t } from 'elysia';
 
 const MAX_POSTS_FETCH: number = parseInt(process.env.MAX_POSTS_FETCH || '100');
 
 interface createPostPayload {
-    title: String;
-    description: String;
-    content: String;
-    thumbnail: String;
-    userId: Number;
-    isPublished: Boolean;
+    title: string;
+    description: string;
+    content: string;
+    thumbnail: string;
+    userId: number;
+    isPublished: boolean;
 }
 
 export const postsHandler = {
@@ -57,8 +59,19 @@ export const postsHandler = {
     }: {
         body: createPostPayload;
     }) => {
+        // check if some fields are empty
+        if (!title || !description || !content || !thumbnail || !userId) {
+            throw new APIError(400, badRequest);
+        }
         try {
-            const slug = title.toLowerCase().replace(/ /g, '-');
+            const slug = slugify(title, {
+                replacement: '-', // replace spaces with replacement character, defaults to `-`
+                remove: undefined, // remove characters that match regex, defaults to `undefined`
+                lower: false, // convert to lower case, defaults to `false`
+                strict: false, // strip special characters except replacement, defaults to `false`
+                locale: 'en', // language code of the locale to use, defaults to `en`
+                trim: true, // trim leading and trailing replacement chars, defaults to `true`
+            });
             const wordCount = content.split(' ').length;
             const readTime = Math.ceil(wordCount / 200);
             const post = await pool.query(
@@ -101,4 +114,13 @@ export const postsHandler = {
             );
         }
     },
+
+    validateCreatePost: t.Object({
+        title: t.String(),
+        description: t.String(),
+        content: t.String(),
+        thumbnail: t.String(),
+        userId: t.Number(),
+        isPublished: t.Boolean(),
+    }),
 };

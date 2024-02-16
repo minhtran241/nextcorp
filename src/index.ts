@@ -11,88 +11,97 @@ import jwt from '@elysiajs/jwt';
 import { configureAuthRoutes } from './routes/AuthRoute';
 import { configureHealthRoutes } from './routes/HealthRoute';
 import { configureUsersRoutes } from './routes/UsersRoute';
+import { configurePostsRoutes } from './routes/PostsRoute';
 
 const app = new Elysia();
 const API_PORT = parseInt(process.env.API_PORT || '8080');
 
-app.onError(({ code, error, set }) => {
-    if (error instanceof APIError) {
-        set.status = error.statusCode;
-        const res: ApiResponse = {
-            status: error.statusCode,
-            message: error.message,
-            timestamp: new Date(),
-        };
-        return res;
-    }
-    switch (code) {
+const jwtConfig = {
+    secret: process.env.JWT_SECRET || 'secret',
+    alg: 'HS256',
+    exp: 60 * 60 * 24, // 1 day expiration
+    iss: 'nextcorp',
+    sub: 'access',
+    iat: new Date().getTime(),
+};
+
+const refreshJwtConfig = {
+    secret: process.env.JWT_REFRESH || 'refresh',
+    alg: 'HS256',
+    exp: 60 * 60 * 24 * 365, // 1 year expiration
+    iss: 'nextcorp',
+    sub: 'refresh',
+    iat: new Date().getTime(),
+};
+
+const errorHandler = ({ error, set }) => {
+    let status;
+    switch (set.code) {
         case 'NOT_FOUND':
-            set.status = 404;
+            status = 404;
             break;
         case 'INTERNAL_SERVER_ERROR':
-            set.status = 500;
+            status = 500;
             break;
         case 'INVALID_COOKIE_SIGNATURE':
-            set.status = 401;
+            status = 401;
             break;
         case 'VALIDATION':
-            set.status = 400;
+            status = 400;
             break;
         default:
-            set.status = 500;
+            status = 500;
             break;
     }
-    const res: ApiResponse = {
+    set.status = status;
+    return {
         status: set.status,
-        message: error.message,
+        message:
+            error instanceof APIError
+                ? error.message
+                : error.message || 'Unknown error',
         timestamp: new Date(),
     };
-    return res;
+};
+
+app.onError(errorHandler)
+    .use(jwt({ name: 'jwt', ...jwtConfig }))
+    .use(jwt({ name: 'refreshJwt', ...refreshJwtConfig }))
+    .use(cookie())
+    .use(bearer())
+    .use(serverTiming())
+    .use(
+        rateLimit({
+            duration: 60 * 1000, // 1 minute
+            max: 100,
+            responseMessage: rateLimitExceeded,
+        })
+    );
+
+if (process.env.ENV === 'prod') {
+    app.use(
+        cron({
+            name: 'heartbeat',
+            pattern: '*/10 * * * * *',
+            run() {
+                const systemInfo = {
+                    cpu: process.cpuUsage(),
+                    memory: process.memoryUsage(),
+                    uptime: process.uptime(),
+                    port: API_PORT,
+                    heartbeat: new Date(),
+                };
+                console.log(systemInfo);
+            },
+        })
+    );
+}
+
+app.use(configureHealthRoutes)
+    .use(configureAuthRoutes)
+    .use(configureUsersRoutes)
+    .use(configurePostsRoutes);
+
+app.get('/', () => `Welcome to Bun Elysia`).listen(API_PORT, () => {
+    console.log(`🦊 Elysia is running at ${app.server?.hostname}:${API_PORT}`);
 });
-
-app.use(
-    jwt({
-        name: 'jwt',
-        secret: process.env.JWT_SECRET || 'secret',
-        alg: 'HS256',
-    })
-);
-app.use(cookie());
-app.use(bearer());
-app.use(serverTiming());
-app.use(
-    rateLimit({
-        duration: 60 * 1000, // 1 minute
-        max: 100,
-        responseMessage: rateLimitExceeded,
-    })
-);
-
-app.get('/', () => `Welcome to Bun Elysia`)
-    .group('/health', configureHealthRoutes)
-    .group('/auth', configureAuthRoutes)
-    .group('/user', configureUsersRoutes)
-    .listen(API_PORT, () => {
-        console.log(
-            `🦊 Elysia is running at ${app.server?.hostname}:${API_PORT}`
-        );
-    });
-
-// app.use(
-//     cron({
-//         name: 'heartbeat',
-//         pattern: '*/10 * * * * *',
-//         run() {
-//             const systemInfo = {
-//                 cpu: process.cpuUsage(),
-//                 memory: process.memoryUsage(),
-//                 uptime: process.uptime(),
-//                 port: API_PORT,
-//                 heartbeat: new Date(),
-//             };
-//             console.log(systemInfo);
-//         },
-//     })
-// );
-
-export default app;
