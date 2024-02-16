@@ -1,10 +1,10 @@
-export default interface User {
+export default interface UserModel {
     id: number;
     username: string;
     password: string;
     email: string;
     avatar: string;
-    isAdmin: boolean;
+    is_admin: boolean;
     created_at: Date;
     last_login: Date;
 }

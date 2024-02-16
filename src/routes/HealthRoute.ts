@@ -1,8 +1,8 @@
 import { Elysia } from 'elysia';
-import ApiResponse from '../../types/APIResponse';
+import ApiResponse from '../types/APIResponse';
 
-export const healthController = (app: Elysia) => {
-    app.get('/health', async () => {
+export const configureHealthRoutes = (app: Elysia) => {
+    app.get('/', async () => {
         const res: ApiResponse = {
             status: 200,
             message: 'Healthy',
