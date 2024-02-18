@@ -2,7 +2,6 @@ import { Elysia } from 'elysia';
 import { rateLimit } from 'elysia-rate-limit';
 import { cron } from '@elysiajs/cron';
 import { serverTiming } from '@elysiajs/server-timing';
-import ApiResponse from './types/APIResponse';
 import APIError from './errors/APIError';
 import { rateLimitExceeded } from './messages/failure';
 import bearer from '@elysiajs/bearer';

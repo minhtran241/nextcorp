@@ -8,6 +8,7 @@ export const isAuthenticated: MiddlewareFunction = async (context) => {
         cookie: { access_token },
         jwt,
     } = context;
+    // console log header
     if (!bearer && !access_token) {
         set.status = 401;
         set.headers[
@@ -42,4 +43,5 @@ export const isAdmin: MiddlewareFunction = async (context) => {
         set.status = 403;
         throw new APIError(403, 'Forbidden');
     }
+    console.log('isAdmin');
 };
