@@ -11,9 +11,7 @@ export const configureUsersRoutes = new Elysia({ prefix: '/user' })
         beforeHandle: [isAuthenticated, isAdmin],
         body: usersHandler.validateCreateUser,
     })
-    .get('/:username', usersHandler.getUser, {
-        beforeHandle: [isAuthenticated, isAdmin],
-    })
+    .get('/:id', usersHandler.getUser)
     .delete('/:id', usersHandler.deleteUser, {
         beforeHandle: [isAuthenticated, isAdmin],
     });

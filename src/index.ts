@@ -12,6 +12,7 @@ import { configureAuthRoutes } from './routes/AuthRoute';
 import { configureHealthRoutes } from './routes/HealthRoute';
 import { configureUsersRoutes } from './routes/UsersRoute';
 import { configurePostsRoutes } from './routes/PostsRoute';
+import cors from '@elysiajs/cors';
 
 const app = new Elysia();
 const API_PORT = parseInt(process.env.API_PORT || '8080');
@@ -19,7 +20,7 @@ const API_PORT = parseInt(process.env.API_PORT || '8080');
 const jwtConfig = {
     secret: process.env.JWT_SECRET || 'secret',
     alg: 'HS256',
-    exp: 60 * 60 * 24, // 1 day expiration
+    // exp: 60 * 60 * 24, // 1 day expiration
     iss: 'nextcorp',
     sub: 'access',
     iat: new Date().getTime(),
@@ -34,7 +35,7 @@ const refreshJwtConfig = {
     iat: new Date().getTime(),
 };
 
-const errorHandler = ({ error, set }) => {
+const errorHandler = ({ error, set }: { error: Error; set: any }) => {
     let status;
     switch (set.code) {
         case 'NOT_FOUND':
@@ -65,6 +66,7 @@ const errorHandler = ({ error, set }) => {
 };
 
 app.onError(errorHandler)
+    .use(cors())
     .use(jwt({ name: 'jwt', ...jwtConfig }))
     .use(jwt({ name: 'refreshJwt', ...refreshJwtConfig }))
     .use(cookie())

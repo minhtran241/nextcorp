@@ -38,20 +38,17 @@ export const usersHandler = {
         }
     },
 
-    getUser: async ({
-        params: { username },
-    }: {
-        params: { username: string };
-    }) => {
+    getUser: async ({ params: { id } }: { params: { id: string } }) => {
         try {
             const user = await pool.query(
-                'SELECT * FROM public.users WHERE username = $1',
-                [username]
+                'SELECT * FROM public.users WHERE id = $1',
+                [parseInt(id)]
             );
             if (user.rows.length === 0) {
                 throw new APIError(404, userNotFound);
             }
             delete user.rows[0].password;
+            console.log(user.rows[0]);
             return user.rows[0];
         } catch (error: any) {
             throw new APIError(
@@ -69,7 +66,7 @@ export const usersHandler = {
         try {
             const hashedPassword = await Bun.password.hash(password);
             const user = await pool.query(
-                'INSERT INTO public.users (username, password, email, avatar, isAdmin) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+                'INSERT INTO public.users (username, password, email, avatar, is_admin) VALUES ($1, $2, $3, $4, $5) RETURNING *',
                 [username, hashedPassword, email, avatar, isAdmin]
             );
             return user.rows[0];

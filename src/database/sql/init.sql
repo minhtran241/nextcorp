@@ -31,6 +31,14 @@ CREATE TABLE posts (
     is_published BOOLEAN DEFAULT FALSE
 );
 
+CREATE TABLE refresh_tokens (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    token VARCHAR(255) NOT NULL UNIQUE,
+	revoked_at TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 INSERT INTO users (username, password, email, avatar, is_admin, created_at) 
 VALUES 
   ('minhtran', '$argon2id$v=19$m=65536,t=2,p=1$TQtwv6USIyH5plqr4C156E2W72zSMKeCgfM9t53SpFs$pwSE9hXPPunhBxN/bFVQ0xvLPuzV2GUZ2vNobM6KXcI', 'user1@example.com', 'https://images.pexels.com/photos/20225732/pexels-photo-20225732/free-photo-of-a-woman-holding-a-bunch-of-roses-in-front-of-her-face.jpeg?auto=compress&cs=tinysrgb&w=1200&lazy=load', true, NOW()),

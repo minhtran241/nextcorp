@@ -1,4 +1,3 @@
-import { JWTPayloadSpec } from '@elysiajs/jwt';
 import APIError from '~errors/APIError';
 import MiddlewareFunction from '~types/MiddlewareFunction';
 
