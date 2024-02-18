@@ -29,6 +29,7 @@ interface AuthHandlerProps {
     jwt: any;
     body: any;
     setCookie: any;
+    set: any;
 }
 
 interface TokenHandlerProps {
@@ -100,6 +101,7 @@ export const authHandler = {
         jwt,
         body,
         setCookie,
+        set,
     }: AuthHandlerProps): Promise<ApiResponse> => {
         try {
             const { username, password, email } = body as RegisterPayload;
@@ -111,7 +113,7 @@ export const authHandler = {
             const hashedPassword = await Bun.password.hash(password);
             const { rows: newUserRows }: QueryResult<UserModel> =
                 await pool.query(
-                    'INSERT INTO public.users (username, password, email, avatar, isAdmin, lastLogin) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
+                    'INSERT INTO public.users (username, password, email, avatar, is_admin, last_login) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
                     [username, hashedPassword, email, '', false, new Date()]
                 );
             const user = newUserRows[0];
@@ -123,6 +125,7 @@ export const authHandler = {
                 maxAge: 15 * 60,
                 path: '/',
             });
+            set.status = 201;
             const response: ApiResponse = {
                 status: 201,
                 message: userCreated,
@@ -130,6 +133,7 @@ export const authHandler = {
                     accessToken,
                     username: user.username,
                     email: user.email,
+                    isAdmin: user.is_admin,
                     avatar: user.avatar,
                     createdAt: user.created_at,
                     lastLogin: user.last_login,
