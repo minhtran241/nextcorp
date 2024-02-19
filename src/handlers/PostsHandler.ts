@@ -1,5 +1,5 @@
 import APIError from '~errors/APIError';
-import { badRequest, internalServerError } from '~messages/failure';
+import { internalServerError } from '~messages/failure';
 import pool from '~database/db';
 import Cursor from 'pg-cursor';
 import slugify from 'slugify';
@@ -37,13 +37,20 @@ export const postsHandler = {
         }
     },
 
-    getPost: async ({ params: { slug } }: { params: { slug: string } }) => {
+    getPost: async ({
+        params: { slug },
+        set,
+    }: {
+        params: { slug: string };
+        set: any;
+    }) => {
         try {
             const post = await pool.query(
                 'SELECT * FROM public.posts WHERE slug = $1',
                 [slug]
             );
             if (post.rows.length === 0) {
+                set.status = 404;
                 throw new APIError(404, 'Post not found');
             }
             return post.rows[0];
@@ -60,12 +67,8 @@ export const postsHandler = {
         set,
     }: {
         body: createPostPayload;
+        set: any;
     }) => {
-        console.log('createPost');
-        // check if some fields are empty
-        if (!title || !description || !content || !thumbnail || !userId) {
-            throw new APIError(400, badRequest);
-        }
         try {
             const slug = slugify(title, {
                 replacement: '-', // replace spaces with replacement character, defaults to `-`
@@ -77,17 +80,6 @@ export const postsHandler = {
             });
             const wordCount = content.split(' ').length;
             const readTime = Math.ceil(wordCount / 200);
-            console.log({
-                title,
-                description,
-                content,
-                slug,
-                thumbnail,
-                wordCount,
-                readTime,
-                userId,
-                isPublished,
-            });
             const post = await pool.query(
                 'INSERT INTO public.posts (title, description, content, slug, thumbnail, word_count, read_time, user_id, is_published) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *',
                 [
@@ -102,7 +94,6 @@ export const postsHandler = {
                     isPublished,
                 ]
             );
-
             set.status = 201;
             const res: ApiResponse = {
                 status: 201,
@@ -132,6 +123,7 @@ export const postsHandler = {
                 [id]
             );
             if (post.rows.length === 0) {
+                set.status = 404;
                 throw new APIError(404, 'Post not found');
             }
 

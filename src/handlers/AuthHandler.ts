@@ -11,7 +11,7 @@ import {
     tokenInvalid,
 } from '~messages/failure';
 import { QueryResult } from 'pg';
-import UserModel from '~types/User';
+import User from '~types/User';
 import RefreshToken from '~types/RefreshToken';
 
 interface RegisterPayload {
@@ -36,6 +36,7 @@ interface TokenHandlerProps {
     jwt: any;
     refreshJwt: any;
     body: any;
+    set: any;
 }
 
 const updateLastLogin = (username: string) => {
@@ -51,20 +52,27 @@ export const authHandler = {
         jwt,
         body,
         setCookie,
+        set,
     }: AuthHandlerProps): Promise<ApiResponse> => {
         try {
             const { username, password } = body as LoginPayload;
-            const { rows }: QueryResult<UserModel> = await pool.query(
+            const { rows }: QueryResult<User> = await pool.query(
                 'SELECT * FROM public.users WHERE username = $1',
                 [username]
             );
             const user = rows[0];
-            if (!user) throw new APIError(404, userNotFound);
+            if (!user) {
+                set.status = 404;
+                throw new APIError(404, userNotFound);
+            }
             const isPasswordMatch = await Bun.password.verify(
                 password,
                 user.password
             );
-            if (!isPasswordMatch) throw new APIError(401, passwordIncorrect);
+            if (!isPasswordMatch) {
+                set.status = 401;
+                throw new APIError(401, passwordIncorrect);
+            }
             const accessToken = await jwt.sign({
                 username: user.username,
                 role: user.is_admin ? 'admin' : 'user',
@@ -73,6 +81,7 @@ export const authHandler = {
                 maxAge: 15 * 60,
                 path: '/',
             });
+            set.status = 200;
             const response: ApiResponse = {
                 status: 200,
                 message: loginSuccess,
@@ -105,17 +114,19 @@ export const authHandler = {
     }: AuthHandlerProps): Promise<ApiResponse> => {
         try {
             const { username, password, email } = body as RegisterPayload;
-            const { rows }: QueryResult<UserModel> = await pool.query(
+            const { rows }: QueryResult<User> = await pool.query(
                 'SELECT * FROM public.users WHERE username = $1 OR email = $2',
                 [username, email]
             );
-            if (rows.length > 0) throw new APIError(409, userOrEmailExists);
+            if (rows.length > 0) {
+                set.status = 409;
+                throw new APIError(409, userOrEmailExists);
+            }
             const hashedPassword = await Bun.password.hash(password);
-            const { rows: newUserRows }: QueryResult<UserModel> =
-                await pool.query(
-                    'INSERT INTO public.users (username, password, email, avatar, is_admin, last_login) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
-                    [username, hashedPassword, email, '', false, new Date()]
-                );
+            const { rows: newUserRows }: QueryResult<User> = await pool.query(
+                'INSERT INTO public.users (username, password, email, avatar, is_admin, last_login) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
+                [username, hashedPassword, email, '', false, new Date()]
+            );
             const user = newUserRows[0];
             const accessToken = await jwt.sign({
                 username: user.username,
@@ -149,29 +160,37 @@ export const authHandler = {
         }
     },
 
-    logout: async ({ setCookie }: AuthHandlerProps): Promise<ApiResponse> => {
-        setCookie('access_token', '', { maxAge: 0, path: '/' });
-        const response: ApiResponse = {
-            status: 201,
-            message: logoutSuccess,
-            timestamp: new Date(),
-        };
-        return response;
-    },
+    // logout: async ({
+    //     setCookie,
+    //     set,
+    // }: AuthHandlerProps): Promise<ApiResponse> => {
+    //     setCookie('access_token', '', { maxAge: 0, path: '/' });
+    //     set.status = 200;
+    //     const response: ApiResponse = {
+    //         status: 200,
+    //         message: logoutSuccess,
+    //         timestamp: new Date(),
+    //     };
+    //     return response;
+    // },
 
     createTokens: async ({
         jwt,
         refreshJwt,
         body,
+        set,
     }: TokenHandlerProps): Promise<ApiResponse> => {
         try {
             const { username } = body;
-            const { rows }: QueryResult<UserModel> = await pool.query(
+            const { rows }: QueryResult<User> = await pool.query(
                 'SELECT * FROM public.users WHERE username = $1',
                 [username]
             );
             const user = rows[0];
-            if (!user) throw new APIError(404, userNotFound);
+            if (!user) {
+                set.status = 404;
+                throw new APIError(404, userNotFound);
+            }
             const payload = {
                 username: user.username,
                 role: user.is_admin ? 'admin' : 'user',
@@ -179,12 +198,13 @@ export const authHandler = {
             const accessToken = await jwt.sign(payload);
             const refreshToken = await refreshJwt.sign(payload);
             await pool.query(
-                'INSERT INTO public.refresh_tokens (userId, token) VALUES ($1, $2)',
+                'INSERT INTO public.refresh_tokens (user_id, token) VALUES ($1, $2)',
                 [user.id, refreshToken]
             );
+            set.status = 201;
             const response: ApiResponse = {
                 status: 201,
-                message: 'Token refreshed',
+                message: 'Token created',
                 data: {
                     accessToken,
                     refreshToken,
@@ -204,21 +224,29 @@ export const authHandler = {
         jwt,
         refreshJwt,
         body,
+        set,
     }: TokenHandlerProps): Promise<ApiResponse> => {
         try {
             const { refreshToken } = body;
             const profile = await refreshJwt.verify(refreshToken);
-            if (!profile) throw new APIError(404, tokenInvalid);
+            if (!profile) {
+                set.status = 404;
+                throw new APIError(404, tokenInvalid);
+            }
             const { rows }: QueryResult<RefreshToken> = await pool.query(
                 'SELECT * FROM public.refresh_tokens WHERE token = $1 AND revoked_at IS NULL',
                 [refreshToken]
             );
             const auth = rows[0];
-            if (!auth) throw new APIError(404, tokenInvalid);
+            if (!auth) {
+                set.status = 404;
+                throw new APIError(404, tokenInvalid);
+            }
             const accessToken = await jwt.sign(profile);
+            set.status = 200;
             const response: ApiResponse = {
                 status: 200,
-                message: 'Access token updated',
+                message: 'Token refreshed',
                 data: {
                     accessToken,
                 },
@@ -226,7 +254,6 @@ export const authHandler = {
             };
             return response;
         } catch (error: any) {
-            console.error(error);
             throw new APIError(
                 error.statusCode || 500,
                 error.message || internalServerError
@@ -237,21 +264,29 @@ export const authHandler = {
     revokeRefreshToken: async ({
         body,
         refreshJwt,
+        set,
     }: TokenHandlerProps): Promise<ApiResponse> => {
         try {
             const { refreshToken } = body;
             const profile = await refreshJwt.verify(refreshToken);
-            if (!profile) throw new APIError(404, tokenInvalid);
+            if (!profile) {
+                set.status = 404;
+                throw new APIError(404, tokenInvalid);
+            }
             const { rows }: QueryResult<RefreshToken> = await pool.query(
                 'SELECT * FROM public.refresh_tokens WHERE token = $1 AND revoked_at IS NULL',
                 [refreshToken]
             );
             const auth = rows[0];
-            if (!auth) throw new APIError(404, tokenInvalid);
+            if (!auth) {
+                set.status = 404;
+                throw new APIError(404, tokenInvalid);
+            }
             await pool.query(
                 'UPDATE public.refresh_tokens SET revoked_at = $1 WHERE token = $2',
                 [new Date(), refreshToken]
             );
+            set.status = 200;
             const response: ApiResponse = {
                 status: 200,
                 message: 'Token revoked',

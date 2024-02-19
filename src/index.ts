@@ -28,32 +28,13 @@ const jwtConfig = {
 const refreshJwtConfig = {
     secret: process.env.JWT_REFRESH || 'refresh',
     alg: 'HS256',
-    exp: 60 * 60 * 24 * 365, // 1 year expiration
+    // exp: 60 * 60 * 24 * 365, // 1 year expiration
     iss: 'nextcorp',
     sub: 'refresh',
     iat: new Date().getTime(),
 };
 
 const errorHandler = ({ error, set }: { error: Error; set: any }) => {
-    let status;
-    switch (set.code) {
-        case 'NOT_FOUND':
-            status = 404;
-            break;
-        case 'INTERNAL_SERVER_ERROR':
-            status = 500;
-            break;
-        case 'INVALID_COOKIE_SIGNATURE':
-            status = 401;
-            break;
-        case 'VALIDATION':
-            status = 400;
-            break;
-        default:
-            status = 500;
-            break;
-    }
-    set.status = status;
     return {
         status: set.status,
         message:
@@ -106,3 +87,5 @@ app.use(configureHealthRoutes)
 app.get('/', () => `Welcome to Bun Elysia`).listen(API_PORT, () => {
     console.log(`🦊 Elysia is running at ${app.server?.hostname}:${API_PORT}`);
 });
+
+export default app;

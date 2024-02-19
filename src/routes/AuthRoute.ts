@@ -8,7 +8,7 @@ export const configureAuthRoutes = new Elysia({ prefix: '/auth' })
     .guard({ body: authHandler.validateRegister }, (guardApp) =>
         guardApp.post('/register', authHandler.register)
     )
-    .post('/logout', authHandler.logout)
+    // .post('/logout', authHandler.logout)
     .guard({ body: authHandler.validateCreateTokens }, (guardApp) =>
         guardApp.post('/create-tokens', authHandler.createTokens)
     )

@@ -1,5 +1,5 @@
 // import postgres, { Sql } from 'postgres';
-import { Pool } from 'pg';
+import { Client, Pool } from 'pg';
 
 // // Connect to the database
 // const sql: Sql<{}> = postgres({
