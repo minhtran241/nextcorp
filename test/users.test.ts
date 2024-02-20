@@ -18,7 +18,14 @@ const generateJWT = (id: number, username: string, role: string) => {
 const url: string = process.env.API_URL + '/user';
 
 const adminToken: string = generateJWT(1, 'test_admin', 'admin');
-const defaultUserToken: string = generateJWT(2, 'test_user', 'user');
+const invalidToken: string = jwt.sign(
+    {
+        id: 1,
+        username: 'test_admin',
+        role: 'admin',
+    },
+    'invalid_secret'
+);
 
 // Database client
 const dbClient = new TestDBClient();
@@ -58,6 +65,19 @@ describe('User endpoint', () => {
             const responseBody = await res.json();
             expect(res.status).toEqual(200);
             expect(responseBody.length).toEqual(userCount + 1);
+        });
+
+        it('Get all current users with invalid token (returned by authentication middleware). Status: 401', async () => {
+            const req = new Request(url, {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${invalidToken}`,
+                },
+            });
+            const res = await app.fetch(req);
+            const responseBody = await res.json();
+            expect(res.status).toEqual(401);
+            expect(responseBody.message).toEqual('Unauthorized');
         });
     });
 

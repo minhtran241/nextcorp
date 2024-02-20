@@ -51,14 +51,7 @@ app.onError(errorHandler)
     .use(jwt({ name: 'refreshJwt', ...refreshJwtConfig }))
     .use(cookie())
     .use(bearer())
-    .use(serverTiming())
-    .use(
-        rateLimit({
-            duration: 60 * 1000, // 1 minute
-            max: 100,
-            responseMessage: rateLimitExceeded,
-        })
-    );
+    .use(serverTiming());
 
 // if (process.env.ENV === 'prod') {
 //     app.use(
@@ -84,7 +77,7 @@ app.use(configureHealthRoutes)
     .use(configureUsersRoutes)
     .use(configurePostsRoutes);
 
-app.get('/', () => `Welcome to Bun Elysia`).listen(API_PORT, () => {
+app.use(rateLimit()).listen(API_PORT, () => {
     console.log(`🦊 Elysia is running at ${app.server?.hostname}:${API_PORT}`);
 });
 

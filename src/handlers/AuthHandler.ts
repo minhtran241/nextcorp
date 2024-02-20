@@ -27,6 +27,7 @@ interface LoginPayload {
 
 interface AuthHandlerProps {
     jwt: any;
+    refreshJwt: any;
     body: any;
     setCookie: any;
     set: any;
@@ -50,6 +51,7 @@ const updateLastLogin = (username: string) => {
 export const authHandler = {
     login: async ({
         jwt,
+        refreshJwt,
         body,
         setCookie,
         set,
@@ -73,14 +75,23 @@ export const authHandler = {
                 set.status = 401;
                 throw new APIError(401, passwordIncorrect);
             }
-            const accessToken = await jwt.sign({
+            const payload = {
                 username: user.username,
                 role: user.is_admin ? 'admin' : 'user',
-            });
-            setCookie('access_token', accessToken, {
+            };
+            const accessToken = await jwt.sign(payload);
+            const refreshToken = await refreshJwt.sign(payload);
+
+            // setCookie('access_token', accessToken, {
+            //     maxAge: 15 * 60,
+            //     path: '/',
+            // });
+            // Set cookie to refresh token and header to access token
+            setCookie('refresh_token', refreshToken, {
                 maxAge: 15 * 60,
                 path: '/',
             });
+            set.headers['Authorization'] = `Bearer ${accessToken}`;
             set.status = 200;
             const response: ApiResponse = {
                 status: 200,
@@ -108,6 +119,7 @@ export const authHandler = {
 
     register: async ({
         jwt,
+        refreshJwt,
         body,
         setCookie,
         set,
@@ -128,11 +140,15 @@ export const authHandler = {
                 [username, hashedPassword, email, '', false, new Date()]
             );
             const user = newUserRows[0];
-            const accessToken = await jwt.sign({
+            const payload = {
                 username: user.username,
                 role: user.is_admin ? 'admin' : 'user',
-            });
-            setCookie('access_token', accessToken, {
+            };
+            const accessToken = await jwt.sign(payload);
+            const refreshToken = await refreshJwt.sign(payload);
+            // Set access token to header and refresh token to cookie
+            set.headers['Authorization'] = `Bearer ${accessToken}`;
+            setCookie('refresh_token', refreshToken, {
                 maxAge: 15 * 60,
                 path: '/',
             });

@@ -5,11 +5,11 @@ export const isAuthenticated: MiddlewareFunction = async (context) => {
     const {
         bearer,
         set,
-        cookie: { access_token },
+        cookie: { refresh_token },
         jwt,
     } = context;
-    // console log header
-    if (!bearer && !access_token) {
+    // Get access token from header, refresh token from cookie
+    if (!bearer && !refresh_token) {
         set.status = 401;
         set.headers[
             'WWW-Authenticate'
@@ -18,15 +18,23 @@ export const isAuthenticated: MiddlewareFunction = async (context) => {
         throw new APIError(401, 'Unauthorized');
     }
 
-    const token = bearer || access_token;
-    const profile = await jwt.verify(token);
+    const profile = await jwt.verify(bearer);
     if (!profile) {
-        set.status = 401;
-        set.headers[
-            'WWW-Authenticate'
-        ] = `Bearer realm='sign', error="invalid_request"`;
+        // Check if refresh token is valid
+        const rprofile = await jwt.verify(refresh_token);
+        if (!rprofile) {
+            set.status = 401;
+            set.headers[
+                'WWW-Authenticate'
+            ] = `Bearer realm='sign', error="invalid_request"`;
 
-        throw new APIError(401, 'Unauthorized');
+            throw new APIError(401, 'Unauthorized');
+        } else {
+            // Generate new access token
+            const newAccessToken = await jwt.sign(rprofile);
+            set.headers['Authorization'] = `Bearer ${newAccessToken}`;
+            set.cookie['refresh_token'] = refresh_token;
+        }
     }
 };
 
@@ -43,5 +51,4 @@ export const isAdmin: MiddlewareFunction = async (context) => {
         set.status = 403;
         throw new APIError(403, 'Forbidden');
     }
-    console.log('isAdmin');
 };
