@@ -64,6 +64,48 @@ describe('Posts endpoint', () => {
         });
     });
 
+    describe('GET POST BY SLUG', () => {
+        let post: any = {};
+
+        afterAll(async () => {
+            await dbClient.deletePostById(post.id);
+        });
+
+        beforeAll(async () => {
+            // Create a new post
+            post = await dbClient.createMockPost();
+        });
+
+        it('Get post by slug. Status: 200', async () => {
+            const req = new Request(`${url}/${post.slug}`, {
+                method: 'GET',
+            });
+            const res = await app.fetch(req);
+            const responseBody = await res.json();
+            expect(res.status).toEqual(200);
+            expect(responseBody.title).toEqual(post.title);
+            expect(responseBody.description).toEqual(post.description);
+            expect(responseBody.content).toEqual(post.content);
+            expect(responseBody.slug).toEqual(post.slug);
+            expect(responseBody.thumbnail).toEqual(post.thumbnail);
+            expect(responseBody.word_count).toEqual(post.word_count);
+            expect(responseBody.read_time).toEqual(post.read_time);
+            expect(responseBody.user_id).toEqual(post.user_id);
+            expect(responseBody.is_published).toEqual(post.is_published);
+        });
+
+        it('Get post by slug. Status: 404', async () => {
+            const req = new Request(`${url}/invalid-slug`, {
+                method: 'GET',
+            });
+            const res = await app.fetch(req);
+            const responseBody = await res.json();
+            expect(res.status).toEqual(404);
+            expect(responseBody.status).toEqual(404);
+            expect(responseBody.message).toEqual('Post not found');
+        });
+    });
+
     describe('POST POSTS', () => {
         const payload = generateMockPostAPIPayload();
         afterAll(async () => {
@@ -133,48 +175,6 @@ describe('Posts endpoint', () => {
             const responseBody = await res.json();
             expect(res.status).toEqual(400);
             expect(responseBody.status).toEqual(400);
-        });
-    });
-
-    describe('GET POST BY SLUG', () => {
-        let post: any = {};
-
-        afterAll(async () => {
-            await dbClient.deletePostById(post.id);
-        });
-
-        beforeAll(async () => {
-            // Create a new post
-            post = await dbClient.createMockPost();
-        });
-
-        it('Get post by slug. Status: 200', async () => {
-            const req = new Request(`${url}/${post.slug}`, {
-                method: 'GET',
-            });
-            const res = await app.fetch(req);
-            const responseBody = await res.json();
-            expect(res.status).toEqual(200);
-            expect(responseBody.title).toEqual(post.title);
-            expect(responseBody.description).toEqual(post.description);
-            expect(responseBody.content).toEqual(post.content);
-            expect(responseBody.slug).toEqual(post.slug);
-            expect(responseBody.thumbnail).toEqual(post.thumbnail);
-            expect(responseBody.word_count).toEqual(post.word_count);
-            expect(responseBody.read_time).toEqual(post.read_time);
-            expect(responseBody.user_id).toEqual(post.user_id);
-            expect(responseBody.is_published).toEqual(post.is_published);
-        });
-
-        it('Get post by slug. Status: 404', async () => {
-            const req = new Request(`${url}/invalid-slug`, {
-                method: 'GET',
-            });
-            const res = await app.fetch(req);
-            const responseBody = await res.json();
-            expect(res.status).toEqual(404);
-            expect(responseBody.status).toEqual(404);
-            expect(responseBody.message).toEqual('Post not found');
         });
     });
 

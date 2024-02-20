@@ -1,7 +1,7 @@
 import { afterAll, beforeAll, describe, expect, it, jest } from 'bun:test';
 import jwt from 'jsonwebtoken';
 import app from '../src';
-import { generateMockUserAPIPayload } from '~utils/mockData';
+import { generateMockAuthAPIPayload } from '~utils/mockData';
 import { loginSuccess, userCreated } from '~messages/success';
 import TestDBClient from '~utils/TestDBClient';
 import {
@@ -20,7 +20,7 @@ describe('Auth endpoint', () => {
     let testRefreshToken: string = '';
 
     beforeAll(async () => {
-        testUser = generateMockUserAPIPayload();
+        testUser = generateMockAuthAPIPayload();
     });
 
     afterAll(async () => {

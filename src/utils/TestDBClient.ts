@@ -1,8 +1,9 @@
 import { Client } from 'pg';
 import MockPost from '~types/MockPost';
 import Post from '~types/Post';
-import { generateMockPost } from './mockData';
+import { generateMockPost, generateMockUser } from './mockData';
 import User from '~types/User';
+import MockUser from '~types/MockUser';
 
 // const TestDBClient: Client = new Client({
 //     host: process.env.DB_HOST,
@@ -48,6 +49,21 @@ class TestDBClient {
                 payload.read_time,
                 payload.userId,
                 payload.isPublished,
+            ]
+        );
+        return res.rows[0];
+    }
+
+    // Create a new user
+    async createMockUser(isAdmin: boolean): Promise<User> {
+        const payload: MockUser = generateMockUser(isAdmin);
+        const res = await this.client.query(
+            'INSERT INTO public.users (username, email, password, is_admin) VALUES ($1, $2, $3, $4) RETURNING *',
+            [
+                payload.username,
+                payload.email,
+                payload.password,
+                payload.is_admin,
             ]
         );
         return res.rows[0];

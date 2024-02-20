@@ -54,7 +54,16 @@ export const generateMockUser = (is_admin: boolean): MockUser => {
         username: faker.internet.userName(),
         email: faker.internet.email(),
         password: faker.internet.password(),
+        avatar: faker.image.avatar(),
         is_admin,
+    };
+};
+
+export const generateMockAuthAPIPayload = () => {
+    return {
+        username: faker.internet.userName(),
+        email: faker.internet.email(),
+        password: faker.internet.password(),
     };
 };
 
@@ -63,5 +72,14 @@ export const generateMockUserAPIPayload = () => {
         username: faker.internet.userName(),
         email: faker.internet.email(),
         password: faker.internet.password(),
+        avatar: faker.image.avatar(),
+        isAdmin: faker.datatype.boolean(),
     };
 };
+
+// export const generateMockLoginPayload = () => {
+//     return {
+//         username: faker.internet.userName(),
+//         password: faker.internet.password(),
+//     };
+// };

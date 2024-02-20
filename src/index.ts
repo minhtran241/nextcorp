@@ -60,24 +60,24 @@ app.onError(errorHandler)
         })
     );
 
-if (process.env.ENV === 'prod') {
-    app.use(
-        cron({
-            name: 'heartbeat',
-            pattern: '*/10 * * * * *',
-            run() {
-                const systemInfo = {
-                    cpu: process.cpuUsage(),
-                    memory: process.memoryUsage(),
-                    uptime: process.uptime(),
-                    port: API_PORT,
-                    heartbeat: new Date(),
-                };
-                console.log(systemInfo);
-            },
-        })
-    );
-}
+// if (process.env.ENV === 'prod') {
+//     app.use(
+//         cron({
+//             name: 'heartbeat',
+//             pattern: '*/10 * * * * *',
+//             run() {
+//                 const systemInfo = {
+//                     cpu: process.cpuUsage(),
+//                     memory: process.memoryUsage(),
+//                     uptime: process.uptime(),
+//                     port: API_PORT,
+//                     heartbeat: new Date(),
+//                 };
+//                 console.log(systemInfo);
+//             },
+//         })
+//     );
+// }
 
 app.use(configureHealthRoutes)
     .use(configureAuthRoutes)

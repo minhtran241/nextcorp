@@ -39,13 +39,20 @@ export const usersHandler = {
         }
     },
 
-    getUser: async ({ params: { id } }: { params: { id: string } }) => {
+    getUser: async ({
+        params: { id },
+        set,
+    }: {
+        params: { id: string };
+        set: any;
+    }) => {
         try {
             const user = await pool.query(
                 'SELECT * FROM public.users WHERE id = $1',
                 [parseInt(id)]
             );
             if (user.rows.length === 0) {
+                set.status = 404;
                 throw new APIError(404, userNotFound);
             }
             delete user.rows[0].password;
@@ -68,6 +75,7 @@ export const usersHandler = {
     }) => {
         try {
             const hashedPassword = await Bun.password.hash(password);
+            // This will throw an error if the username or email already exists
             const user = await pool.query(
                 'INSERT INTO public.users (username, password, email, avatar, is_admin) VALUES ($1, $2, $3, $4, $5) RETURNING *',
                 [username, hashedPassword, email, avatar, isAdmin]
@@ -81,6 +89,12 @@ export const usersHandler = {
             };
             return res;
         } catch (error: any) {
+            // If the error is a unique constraint violation, return a 409 status code
+            if (error.code === '23505') {
+                set.status = 409;
+                error.statusCode = 409;
+                error.message = 'Username or email already exists';
+            }
             throw new APIError(
                 error.statusCode || 500,
                 error.message || internalServerError
@@ -103,6 +117,7 @@ export const usersHandler = {
                 [userId]
             );
             if (user.rows.length === 0) {
+                set.status = 404;
                 throw new APIError(404, userNotFound);
             }
             set.status = 200;
