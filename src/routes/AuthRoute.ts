@@ -9,9 +9,9 @@ export const configureAuthRoutes = new Elysia({ prefix: '/auth' })
         guardApp.post('/register', authHandler.register)
     )
     // .post('/logout', authHandler.logout)
-    .guard({ body: authHandler.validateCreateTokens }, (guardApp) =>
-        guardApp.post('/create-tokens', authHandler.createTokens)
-    )
+    // .guard({ body: authHandler.validateCreateTokens }, (guardApp) =>
+    //     guardApp.post('/create-tokens', authHandler.createTokens)
+    // )
     .guard({ body: authHandler.validateRefreshToken }, (guardApp) =>
         guardApp.post('/refresh', authHandler.refreshToken)
     )
