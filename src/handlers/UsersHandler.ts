@@ -56,7 +56,7 @@ export const usersHandler = {
                 throw new APIError(404, userNotFound);
             }
             delete user.rows[0].password;
-            console.log(user.rows[0]);
+            // console.log(user.rows[0]);
             return user.rows[0];
         } catch (error: any) {
             throw new APIError(

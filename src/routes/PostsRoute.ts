@@ -12,4 +12,6 @@ export const configurePostsRoutes = new Elysia({ prefix: '/post' })
     .get('/:slug', postsHandler.getPost)
     .delete('/:id', postsHandler.deletePost, {
         beforeHandle: [isAuthenticated, isAdmin],
-    });
+    })
+    // get view count of a post
+    .get('/:slug/view', postsHandler.getPostViewCount);

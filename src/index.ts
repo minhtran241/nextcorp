@@ -12,6 +12,9 @@ import { configureHealthRoutes } from './routes/HealthRoute';
 import { configureUsersRoutes } from './routes/UsersRoute';
 import { configurePostsRoutes } from './routes/PostsRoute';
 import cors from '@elysiajs/cors';
+import { configureProjectsRoutes } from './routes/ProjectsRoute';
+import { configureSkillsRoutes } from './routes/SkillsRoute';
+import { configureMilestonesRoutes } from './routes/MilestonesRoute';
 
 const app = new Elysia();
 const API_PORT = parseInt(process.env.API_PORT || '8080');
@@ -75,7 +78,10 @@ app.onError(errorHandler)
 app.use(configureHealthRoutes)
     .use(configureAuthRoutes)
     .use(configureUsersRoutes)
-    .use(configurePostsRoutes);
+    .use(configurePostsRoutes)
+    .use(configureProjectsRoutes)
+    .use(configureSkillsRoutes)
+    .use(configureMilestonesRoutes);
 
 app.use(rateLimit()).listen(API_PORT, () => {
     console.log(`🦊 Elysia is running at ${app.server?.hostname}:${API_PORT}`);
