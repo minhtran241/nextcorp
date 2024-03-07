@@ -11,65 +11,61 @@ const DATA_ATTRS_DIR = path.join(process.cwd(), 'data', 'project');
 const DATA_ATTRS_FILE = path.join(DATA_ATTRS_DIR, 'projects.json');
 
 // * Fetch projects from API
-// const getProjects = async (limit) => {
-//     const res = await alovaInstance.Get(`/project?limit=${limit}`, {
-//         localCache: null,
-//     });
-//     if (!res.ok) {
-//         throw new Error('Something went wrong');
-//     }
-//     const data = await res.json();
-//     // console.log(data);
-//     return data;
-// };
+const getProjects = async (limit) => {
+    const res = await alovaInstance.Get(`/project?limit=${limit}`, {
+        localCache: null,
+    });
+    if (!res.ok) {
+        throw new Error('Something went wrong');
+    }
+    const data = await res.json();
+    // console.log(data);
+    return data;
+};
 
 // * Fetch projects from file system
-const getProjects = async (limit) => {
-    try {
-        // Read project data from JSON file
-        const projectsData = await fs.readFile(
-            path.join(DATA_ATTRS_FILE),
-            'utf-8'
-        );
-        const projects = JSON.parse(projectsData);
-        return projects.slice(0, limit);
-    } catch (error) {
-        console.error('Error fetching projects:', error);
-        throw new Error('Failed to fetch projects');
-    }
-};
+// const getProjects = async (limit) => {
+//     try {
+//         // Read project data from JSON file
+//         const projectsData = await fs.readFile(
+//             path.join(DATA_ATTRS_FILE),
+//             'utf-8'
+//         );
+//         const projects = JSON.parse(projectsData);
+//         return projects.slice(0, limit);
+//     } catch (error) {
+//         console.error('Error fetching projects:', error);
+//         throw new Error('Failed to fetch projects');
+//     }
+// };
 
 const Projects = async ({ limit }) => {
     const projects = await getProjects(limit);
     return (
-        <div className="items-center justify-center mt-20">
+        <div className="items-center justify-center mt-12">
             <div className="max-w-xl mx-auto">
                 <div className="text-center ">
                     <div className="flex flex-col items-center ">
-                        <h1 className="text-5xl font-semibold leading-tight dark:text-white">
-                            {' '}
-                            Personal{' '}
-                            <span className="text-[#0033A0]">
-                                Projects
-                            </span>{' '}
+                        <h1 className="text-5xl font-semibold leading-tight">
+                            Company Projects
                         </h1>
                         <div className="flex w-24 mt-1 mb-6 overflow-hidden rounded">
-                            <div className="flex-1 h-2 bg-blue-200"></div>
-                            <div className="flex-1 h-2 bg-blue-400"></div>
-                            <div className="flex-1 h-2 bg-[#0033A0]"></div>
+                            <div className="flex-1 h-2 bg-gray-400"></div>
+                            <div className="flex-1 h-2 bg-gray-600"></div>
+                            <div className="flex-1 h-2 bg-black"></div>
                         </div>
                     </div>
-                    <p className="mb-16 text-base text-center text-gray-600">
-                        I have worked on these projects in my free time. I have
-                        used these projects to learn new technologies and
-                        implement new features.
+                    <p className="mb-8 text-base text-center text-gray-600">
+                        We have been on the market for over 10 years, and we
+                        have completed a lot of projects. Here are some of our
+                        projects.
                     </p>
                 </div>
             </div>
             <Suspense
                 fallback={
                     <div className="grid min-h-[140px] w-full place-items-center overflow-x-scroll rounded-lg p-6 lg:overflow-visible">
-                        <Loader2 className="mr-2 h-12 w-12 animate-spin text-[#0033A0]" />
+                        <Loader2 className="mr-2 h-12 w-12 animate-spin" />
                     </div>
                 }
             >
@@ -82,7 +78,7 @@ const Projects = async ({ limit }) => {
                             key={index}
                         >
                             {/* Created at */}
-                            <div className="flex flex-row justify-end leading-none text-[#0033A0] dark:text-blue-600 gap-2 mb-4">
+                            <div className="flex flex-row justify-end leading-none gap-2 mb-4">
                                 <CalendarDays className="h-4 w-4" />
                                 <span className="italic">
                                     {new Date(
@@ -114,7 +110,7 @@ const Projects = async ({ limit }) => {
 
                             <Link
                                 href={`/project/${project.slug}`}
-                                className="text-xl font-bold mt-4 hover:text-[#0033A0] dark:hover:text-blue-600"
+                                className="text-xl font-bold mt-4"
                             >
                                 {project.title}
                             </Link>
@@ -127,7 +123,7 @@ const Projects = async ({ limit }) => {
                                         href={project.link}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="flex gap-1 hover:text-[#0033A0] dark:hover:text-blue-600 cursor-pointer font-semibold leading-none"
+                                        className="flex gap-1 cursor-pointer font-semibold leading-none"
                                         // onClick={() => incrementViewCount(project.slug)}
                                     >
                                         <Radio className="h-4 w-4" />
@@ -142,8 +138,7 @@ const Projects = async ({ limit }) => {
                                         href={project.repo_link}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="flex gap-1 hover:text-[#0033A0] dark:hover:text-blue-600 cursor-pointer font-semibold leading-none"
-                                        // onClick={() => incrementViewCount(project.slug)}
+                                        className="flex gap-1 cursor-pointer font-semibold leading-none"
                                     >
                                         <Github className="h-4 w-4" />
                                         View on Github
@@ -172,7 +167,7 @@ const Projects = async ({ limit }) => {
             {/* See More */}
             <div className="flex justify-center mt-8">
                 <Link href="/project">
-                    <div className="flex flex-row items-center gap-2 text-lg font-semibold hover:text-[#0033A0] dark:hover:text-blue-600 cursor-pointer">
+                    <div className="flex flex-row items-center gap-2 text-lg font-semibold cursor-pointer">
                         See More
                         <ArrowRight className="h-6 w-6" />
                     </div>

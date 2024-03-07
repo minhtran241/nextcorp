@@ -1,133 +1,79 @@
-'use client';
-
-import styles from './hero.module.css';
 import Image from 'next/image';
-// import { buttonVariants } from '@/components/ui/button';
 import Link from 'next/link';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Button } from '@/components/ui/button';
-import { Send, Download } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { saveAs } from 'file-saver';
+import { Suspense } from 'react';
+import Loading from '@/app/loading';
 
-const Hero = () => {
-    const saveFile = () => {
-        saveAs('/resume.pdf', 'MinhTran-Resume.pdf');
-    };
-
+const HeroComponent = () => {
     return (
-        <div className={`${styles.container} `}>
-            <div className={styles.textContainer}>
-                <h1 className={`${styles.title}`}>
-                    <span className="">Hi,</span>{' '}
-                    <span className="text-[#0033A0]">I'm Minh Tran</span>
-                </h1>
-                <ul className="text-xl font-light leading-relaxed list-disc gap-2 marker:text-[#0033A0]">
-                    <li>
-                        Experienced{' '}
-                        <span className="text-[#0033A0]">
-                            Software Engineer
-                        </span>{' '}
-                        and{' '}
-                        <span className="text-[#0033A0]">Data Engineer</span>{' '}
-                        with a 2-year track record in backend systems,
-                        specializing in API development, performance
-                        optimization, and system design.
-                    </li>
-                    <li>
-                        Notable achievements in a major real estate system
-                        serving{' '}
-                        <span className="text-[#0033A0]">10,000+ users</span>,
-                        showcasing expertise in managing{' '}
-                        <span className="text-[#0033A0]">
-                            large-scale databases
-                        </span>{' '}
-                        and optimizing{' '}
-                        <span className="text-[#0033A0]">
-                            high-speed inserts
-                        </span>
-                        .
-                    </li>
-                </ul>
-
-                <div className="flex flex-row items-center gap-4 text-lg">
-                    {/* <GraduationCap />{' '} */}
+        <div>
+            <div className="shadow-lg transform duration-300 easy-in-out">
+                <div className="h-36 overflow-hidden">
                     <Image
-                        // className="h-6 w-6"
-                        src="/gvsu-2.svg"
-                        alt="gvsu"
-                        width={115}
-                        height={120}
+                        className="rounded-md w-full object-cover"
+                        src="https://nextjs.org/_next/image?url=%2Fdocs%2Fdark%2Fbackground-image.png&w=3840&q=75&dpl=dpl_EYQcSzVmcwA1iK87dHgh1KCHnaqH"
+                        alt="background_image"
+                        width={1600}
+                        height={400}
                     />
-                    <div className="flex flex-col gap-2">
-                        <div className="">
+                </div>
+                <div className="flex justify-center px-5 -mt-12">
+                    <Avatar className="h-32 w-32 bg-white dark:bg-black p-2">
+                        <AvatarImage
+                            className="dark:invert"
+                            src="https://static-00.iconduck.com/assets.00/next-js-icon-2048x2048-5dqjgeku.png"
+                            alt="minhtran"
+                        />
+                        <AvatarFallback>NC</AvatarFallback>
+                    </Avatar>{' '}
+                </div>
+                <div className="">
+                    <div className="text-center px-14">
+                        <h2 className="text-3xl font-semibold">
+                            Nextcorp Project
+                        </h2>
+                        <p className="italic text-sm">Developed by Minh Tran</p>
+                        <div className="flex flex-col items-center gap-1 mt-2">
                             <Link
-                                target="_blank"
-                                rel="noreferrer"
-                                href="https://www.gvsu.edu/acad/computer-science-bs.htm"
-                                className="hover:text-[#0033A0] cursor-pointer font-semibold"
-                            >
-                                B.S in Computer Science
-                            </Link>{' '}
-                            |
-                            <Link
-                                target="_blank"
-                                rel="noreferrer"
                                 href="https://gvsu.edu"
-                                className="ml-2 hover:text-[#0033A0] cursor-pointer font-semibold"
+                                className="font-semibold"
                             >
                                 Grand Valley State University
                             </Link>
-                        </div>
-                        <p className="text-gray-600 italic">
-                            Sep 2021 - May 2025
-                        </p>
-                        <div className="flex flex-row leading-none">
-                            {/* <Star className="h-4 w-4 mr-2 text-[#0033A0]" /> */}
-                            GPA:{' '}
-                            <span className="ml-2 text-[#0033A0]">3.94</span>
+                            <p className="text-gray-600 dark:text-gray-400">
+                                B.S in Computer Science, 2025
+                            </p>
                         </div>
                     </div>
+                    <hr className="mt-6" />
+                    <div className="flex bg-gray-50 dark:bg-gray-800">
+                        <Link
+                            target="_blank"
+                            className="text-center w-1/2 py-2 px-4 uppercase hover:bg-black dark:hover:bg-white dark:hover:text-black hover:text-white font-medium transition"
+                            href="/contact"
+                        >
+                            Contact
+                        </Link>
+                        <div className="border border-gray-200 dark:border-gray-700"></div>
+                        <Link
+                            target="_blank"
+                            className="text-center w-1/2 py-2 px-4 uppercase hover:bg-black dark:hover:bg-white dark:hover:text-black hover:text-white font-medium transition"
+                            href="/resume.pdf"
+                        >
+                            Resume
+                        </Link>
+                    </div>
                 </div>
-
-                {/* Download Resume Button */}
-                <Button
-                    className="bg-[#0033A0] text-white hover:bg-blue-800"
-                    onClick={saveFile}
-                >
-                    <Download className="mr-2 h-4 w-4" /> Download Resume
-                </Button>
-            </div>
-            {/* Contact form */}
-            <div className="rounded-lg p-8 shadow-lg relative flex-1 border border-gray-200 dark:border-gray-700">
-                <div className="mb-4 flex flex-row leading-none">
-                    <Avatar className="mr-4 border-2 border-[#0033A0] dark:border-white">
-                        <AvatarImage
-                            src="/minhtran-avatar.jpg"
-                            alt="minhtran"
-                        />
-                        <AvatarFallback>VC</AvatarFallback>
-                    </Avatar>{' '}
-                    <p className="text-2xl font-semibold text-[#0033A0] dark:text-white">
-                        Leave me a message!
-                    </p>
-                </div>
-                <form className={styles.form} action="">
-                    {/* <input type="text" placeholder="Name and Surname" /> */}
-                    <Input type="text" placeholder="Name and Surname" />
-                    <Input type="email" placeholder="Email Address" />
-                    <Input type="text" placeholder="Phone Number (Optional)" />
-                    <Textarea
-                        placeholder="Type your message here."
-                        className="dark:bg-black h-32"
-                    />
-                    <Button className="bg-[#0033A0] text-white hover:bg-blue-800">
-                        <Send className="mr-2 h-4 w-4" /> Send message
-                    </Button>
-                </form>
             </div>
         </div>
+    );
+};
+
+const Hero = () => {
+    return (
+        <Suspense fallback={<Loading />}>
+            <HeroComponent />
+        </Suspense>
     );
 };
 

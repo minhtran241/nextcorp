@@ -42,15 +42,12 @@ const LoginPage = async () => {
                 <LoginForm />
                 {/* or */}
                 <div className="flex items-center justify-center my-4 w-full">
-                    <span className="border-b border-[#0033A0] dark:border-white w-1/4"></span>
-                    <span className="mx-2 text-[#0033A0] dark:text-white">
-                        or connect with
-                    </span>
-                    <span className="border-b border-[#0033A0] dark:border-white w-1/4"></span>
+                    <span className="border-b w-1/4"></span>
+                    <span className="mx-2">or connect with</span>
+                    <span className="border-b w-1/4"></span>
                 </div>
                 <div className="flex flex-row items-center justify-center gap-4 w-full">
                     <form>
-                        {/* <button className={styles.github}>Login with Github</button> */}
                         <button
                             className="bg-black hover:bg-gray-900 rounded-full p-2 cursor-pointer"
                             style={{ transition: 'all 0.3s' }}

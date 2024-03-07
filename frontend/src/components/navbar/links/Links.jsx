@@ -1,9 +1,6 @@
 'use client';
 
-// import styles from './links.module.css';
 import NavLink from './navLink/navLink';
-// import { useState } from 'react';
-// import Image from 'next/image';
 import { logout } from '@/lib/action';
 import { Button } from '@/components/ui/button';
 import { LogOut, LogIn } from 'lucide-react';
@@ -20,19 +17,9 @@ import { toast } from 'sonner';
 const links = [
     {
         id: 1,
-        title: 'About',
+        title: 'Home',
         path: '/',
     },
-    // {
-    //     id: 2,
-    //     title: 'About',
-    //     path: '/about',
-    // },
-    // {
-    //     id: 3,
-    //     title: 'Contact',
-    //     path: '/contact',
-    // },
     {
         id: 4,
         title: 'Projects',

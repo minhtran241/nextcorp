@@ -41,34 +41,31 @@ export default function RootLayout({ children }) {
 
     return (
         <html lang="en">
-            <body
-                className={cn(
-                    'min-h-screen bg-background font-sans antialiased',
-                    fontSans.variable
-                )}
-            >
-                <ThemeProvider
-                    attribute="class"
-                    defaultTheme="system"
-                    enableSystem
-                    disableTransitionOnChange
+            <html lang="en">
+                <body
+                    className={cn(
+                        'min-h-screen bg-background font-sans antialiased',
+                        fontSans.variable
+                    )}
                 >
-                    <div className="sticky top-0 z-50">
+                    <ThemeProvider
+                        attribute="class"
+                        defaultTheme="system"
+                        enableSystem
+                        disableTransitionOnChange
+                    >
                         <Navbar
                             isAuthenticated={isAuthenticated}
                             isAdmin={isAdmin}
                         />
-                    </div>
-                    <div className="container">
-                        {children}
-
-                        <Toaster />
-                    </div>
-                    <div className="mt-20">
+                        <div className="container dark:text-white text-black">
+                            {children}
+                        </div>
                         <Footer />
-                    </div>
-                </ThemeProvider>
-            </body>
+                        <Toaster />
+                    </ThemeProvider>
+                </body>
+            </html>
         </html>
     );
 }

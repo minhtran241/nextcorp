@@ -245,21 +245,9 @@ strong {
     margin-bottom: 0.5em !important;
     margin-top: 0.7em !important;
     font-weight: 500 !important;
-    color: #0033a0;
-    /* font-family: 'Kanit', sans-serif !important; */
+    font-family: 'Kanit', sans-serif !important;
     line-height: 1.2 !important;
     text-transform: none;
-}
-
-/* Dark h1 color */
-:is(.dark) .rich-content h1,
-:is(.dark) .rich-content h2,
-:is(.dark) .rich-content h3,
-:is(.dark) .rich-content h4,
-:is(.dark) .rich-content h5,
-:is(.dark) .rich-content h6 {
-    /* Blue-600 */
-    color: #2563eb;
 }
 
 .rich-content h1 {

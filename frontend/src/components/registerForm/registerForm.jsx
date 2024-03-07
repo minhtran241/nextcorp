@@ -328,24 +328,15 @@ const RegisterForm = () => {
                         </FormItem>
                     )}
                 />
-                <Button
-                    type="submit"
-                    disabled={isPending}
-                    className="bg-[#0033A0] hover:bg-blue-800 dark:text-white"
-                >
+                <Button type="submit" disabled={isPending} className="">
                     Register
                 </Button>
                 <Link href="/login">
-                    {'Already have an account?'}{' '}
-                    <b className="hover:text-[#0033A0] dark:hover:text-blue-600">
-                        Login
-                    </b>
+                    {'Already have an account?'} <b className="">Login</b>
                 </Link>
             </form>
         </Form>
     );
-
-    // return (
     //     <form className={styles.form} action={formAction}>
     //         {/* <input
     //             type="text"

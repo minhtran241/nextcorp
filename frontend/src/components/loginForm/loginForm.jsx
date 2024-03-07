@@ -189,40 +189,14 @@ const LoginForm = () => {
                         </FormItem>
                     )}
                 />
-                <Button
-                    type="submit"
-                    disabled={isPending}
-                    className="bg-[#0033A0] hover:bg-blue-800 dark:text-white"
-                >
+                <Button type="submit" disabled={isPending} className="">
                     Login
                 </Button>
                 <Link href="/register">
-                    {"Don't have an account?"}{' '}
-                    <b className="hover:text-[#0033A0] dark:hover:text-blue-600">
-                        Register
-                    </b>
+                    {"Don't have an account?"} <b className="">Register</b>
                 </Link>
             </form>
         </Form>
-        // <form className={styles.form} action={formAction}>
-        //     <Input
-        //         type="text"
-        //         placeholder="Username"
-        //         name="username"
-        //         required
-        //     />
-        //     <Input
-        //         type="password"
-        //         placeholder="Password"
-        //         name="password"
-        //         required
-        //     />
-        //     <Button>Login</Button>
-        //     {state?.error}
-        //     <Link href="/register">
-        //         {"Don't have an account?"} <b>Register</b>
-        //     </Link>
-        // </form>
     );
 };
 
