@@ -143,32 +143,6 @@ export const postsHandler = {
         }
     },
 
-    // Get view count of a post
-    getPostViewCount: async ({
-        params: { slug },
-        set,
-    }: {
-        params: { slug: string };
-        set: any;
-    }) => {
-        try {
-            const post = await pool.query(
-                'SELECT view_count FROM public.posts WHERE slug = $1',
-                [slug]
-            );
-            if (post.rows.length === 0) {
-                set.status = 404;
-                throw new APIError(404, 'Post not found');
-            }
-            return post.rows[0];
-        } catch (error: any) {
-            throw new APIError(
-                error.statusCode || 500,
-                error.message || internalServerError
-            );
-        }
-    },
-
     validateCreatePost: t.Object({
         title: t.String(),
         description: t.String(),

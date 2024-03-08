@@ -1,0 +1,23 @@
+// Define groups and nodes
+Public Internet [icon:cloud] {
+  API User [icon: user]
+  Web User [icon: user]
+}
+Private Server [icon: server] {
+  Router [icon: aws-vpc-router]
+  Private Subnet – Core [icon: aws-private-subnet] {
+    API {
+      ElysiaJS backend [icon: bun]
+    }
+    Website {
+      NextJS frontend [icon: next]
+    }
+  }
+  Prviate Subnet – DB [icon: aws-vpc] {
+    Data [icon: postgres]
+  }
+}
+
+Web User, API User <> Router
+Router <> Website, API
+API <> Data

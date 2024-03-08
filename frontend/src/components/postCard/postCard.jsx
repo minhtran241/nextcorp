@@ -1,11 +1,11 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { Clock } from 'lucide-react';
 
 const PostCard = ({ post }) => {
     const createdAt = new Date(post.created_at);
     const month = createdAt.toLocaleString('default', { month: 'long' });
     const date = new Date(post.created_at).getDate();
+    console.log(post);
     return (
         <div
             className="wow fadeInUp relative overflow-hidden"

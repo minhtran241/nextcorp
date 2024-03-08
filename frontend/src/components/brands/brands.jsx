@@ -7,25 +7,25 @@ const DATA_ATTRS_DIR = path.join(process.cwd(), 'data', 'skill');
 const DATA_ATTRS_FILE = path.join(DATA_ATTRS_DIR, 'skills.json');
 
 // * FETCH SKILLS FROM API
-const getSKills = async () => {
-    const res = await alovaInstance
-        .Get(`/skill`, {
-            localCache: null,
-        })
-        .send();
-    if (!res.ok) {
-        throw new Error('Something went wrong');
-    }
-    const data = await res.json();
-    return data;
-};
-
-// // * FETCH SKILLS FROM LOCAL JSON
 // const getSKills = async () => {
-//     const skillsData = await fs.readFile(path.join(DATA_ATTRS_FILE), 'utf-8');
-//     const skills = JSON.parse(skillsData);
-//     return skills;
+//     const res = await alovaInstance
+//         .Get(`/skill`, {
+//             localCache: null,
+//         })
+//         .send();
+//     if (!res.ok) {
+//         throw new Error('Something went wrong');
+//     }
+//     const data = await res.json();
+//     return data;
 // };
+
+// * FETCH SKILLS FROM LOCAL JSON
+const getSKills = async () => {
+    const skillsData = await fs.readFile(path.join(DATA_ATTRS_FILE), 'utf-8');
+    const skills = JSON.parse(skillsData);
+    return skills;
+};
 
 const Brands = async () => {
     const skills = await getSKills();

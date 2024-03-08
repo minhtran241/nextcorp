@@ -29,12 +29,13 @@ export const isAuthenticated: MiddlewareFunction = async (context) => {
             ] = `Bearer realm='sign', error="invalid_request"`;
 
             throw new APIError(401, 'Unauthorized');
-        } else {
-            // Generate new access token
-            const newAccessToken = await jwt.sign(rprofile);
-            set.headers['Authorization'] = `Bearer ${newAccessToken}`;
-            set.cookie['refresh_token'] = refresh_token;
         }
+        // else {
+        //     // Generate new access token
+        //     const newAccessToken = await jwt.sign(rprofile);
+        //     set.headers['Authorization'] = `Bearer ${newAccessToken}`;
+        //     set.cookie['refresh_token'] = refresh_token;
+        // }
     }
 };
 

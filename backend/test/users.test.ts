@@ -109,7 +109,7 @@ describe('User endpoint', () => {
             });
             const res = await app.fetch(req);
             const responseBody = await res.json();
-            console.log(responseBody);
+            // console.log(responseBody);
             expect(res.status).toEqual(404);
             expect(responseBody.message).toEqual('User not found');
         });

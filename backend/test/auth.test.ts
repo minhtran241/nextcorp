@@ -39,7 +39,7 @@ describe('Auth endpoint', () => {
             });
             const res = await app.fetch(req);
             const responseBody = await res.json();
-            console.log(responseBody);
+            // console.log(responseBody);
             expect(res.status).toBe(201);
             expect(responseBody.status).toBe(201);
             expect(responseBody.message).toBe(userCreated);
@@ -77,6 +77,10 @@ describe('Auth endpoint', () => {
             expect(res.status).toBe(200);
             expect(responseBody.status).toBe(200);
             expect(responseBody.message).toBe(loginSuccess);
+            // Set the refresh token for later use
+            testRefreshToken =
+                res.headers.get('set-cookie')?.split('=')[1].split(';')[0] ||
+                '';
         });
         it('login with incorrect password. Status: 401', async () => {
             const req = new Request(url + '/login', {
@@ -114,41 +118,6 @@ describe('Auth endpoint', () => {
         });
     });
     describe('TOKENS', () => {
-        it('Create tokens. Status: 200', async () => {
-            const req = new Request(url + '/create-tokens', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    username: testUser.username,
-                }),
-            });
-            const res = await app.fetch(req);
-            const responseBody = await res.json();
-            testRefreshToken = responseBody.data.refreshToken;
-            expect(res.status).toBe(201);
-            expect(responseBody.status).toBe(201);
-            expect(responseBody.message).toBe('Token created');
-        });
-
-        it('Create tokens with non-existent username. Status: 404', async () => {
-            const req = new Request(url + '/create-tokens', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    username: 'wrong_username',
-                }),
-            });
-            const res = await app.fetch(req);
-            const responseBody = await res.json();
-            expect(res.status).toBe(404);
-            expect(responseBody.status).toBe(404);
-            expect(responseBody.message).toBe(userNotFound);
-        });
-
         it('Refresh token. Status: 200', async () => {
             const req = new Request(url + '/refresh', {
                 method: 'POST',
@@ -213,6 +182,12 @@ describe('Auth endpoint', () => {
                     refreshToken: testRefreshToken,
                 }),
             });
+            console.log(
+                jwt.verify(
+                    testRefreshToken,
+                    process.env.JWT_REFRESH || 'refresh'
+                )
+            );
             const res = await app.fetch(req);
             const responseBody = await res.json();
             expect(res.status).toBe(200);

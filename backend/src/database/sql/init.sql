@@ -39,41 +39,41 @@ CREATE TABLE refresh_tokens (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE projects (
-	id SERIAL PRIMARY KEY,
-	title VARCHAR(255) NOT NULL,
-	slug VARCHAR(255) NOT NULL,
-	description TEXT NOT NULL,
-	content TEXT,
-	tech_stack TEXT[] NOT NULL,
-	link VARCHAR(255) NOT NULL,
-	repo_link VARCHAR(255) NOT NULL,
-	thumbnail VARCHAR(255) NOT NULL,
-	view_count INTEGER DEFAULT 0,
-	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+-- CREATE TABLE projects (
+-- 	id SERIAL PRIMARY KEY,
+-- 	title VARCHAR(255) NOT NULL,
+-- 	slug VARCHAR(255) NOT NULL,
+-- 	description TEXT NOT NULL,
+-- 	content TEXT,
+-- 	tech_stack TEXT[] NOT NULL,
+-- 	link VARCHAR(255) NOT NULL,
+-- 	repo_link VARCHAR(255) NOT NULL,
+-- 	thumbnail VARCHAR(255) NOT NULL,
+-- 	view_count INTEGER DEFAULT 0,
+-- 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+-- 	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+-- );
 
 
-CREATE TABLE skills (
-	id SERIAL PRIMARY KEY,
-	name VARCHAR(255) NOT NULL,
-	technologies TEXT[] NOT NULL,
-	sorted_order INTEGER NOT NULL,
-	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+-- CREATE TABLE skills (
+-- 	id SERIAL PRIMARY KEY,
+-- 	name VARCHAR(255) NOT NULL,
+-- 	technologies TEXT[] NOT NULL,
+-- 	sorted_order INTEGER NOT NULL,
+-- 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+-- 	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+-- );
 
-CREATE TABLE milestones (
-	id SERIAL PRIMARY KEY,
-	date DATE NOT NULL,
-	title VARCHAR(255) NOT NULL,
-	job_title VARCHAR(255) NOT NULL,
-	description TEXT NOT NULL,
-	icon VARCHAR(255) NOT NULL,
-	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+-- CREATE TABLE milestones (
+-- 	id SERIAL PRIMARY KEY,
+-- 	date DATE NOT NULL,
+-- 	title VARCHAR(255) NOT NULL,
+-- 	job_title VARCHAR(255) NOT NULL,
+-- 	description TEXT NOT NULL,
+-- 	icon VARCHAR(255) NOT NULL,
+-- 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+-- 	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+-- );
 
 
 INSERT INTO users (username, password, email, avatar, is_admin, created_at) 

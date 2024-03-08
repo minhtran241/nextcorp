@@ -1,5 +1,5 @@
 import PostUser from '@/components/postUser/postUser';
-import { nightOwl } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { Suspense } from 'react';
 import { Loader2 } from 'lucide-react';
 import Markdown from 'react-markdown';
@@ -155,7 +155,7 @@ const SinglePostContent = ({ post }) => {
                                                             children
                                                         ).replace(/\n$/, '')}
                                                         language={match[1]}
-                                                        style={nightOwl}
+                                                        style={oneDark}
                                                     />
                                                 ) : (
                                                     <code

@@ -121,7 +121,7 @@ describe('Posts endpoint', () => {
                 body: JSON.stringify(payload),
             });
             const res = await app.fetch(req);
-            console.log(res);
+            // console.log(res);
             const responseBody = await res.json();
             expect(res.status).toEqual(201);
             expect(responseBody.status).toEqual(201);
@@ -218,7 +218,7 @@ describe('Posts endpoint', () => {
                 },
             });
             const res = await app.fetch(req);
-            console.log(res);
+            // console.log(res);
             const responseBody = await res.json();
             expect(res.status).toEqual(404);
             expect(responseBody.status).toEqual(404);

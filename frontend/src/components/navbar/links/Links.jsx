@@ -20,13 +20,13 @@ const links = [
         title: 'Home',
         path: '/',
     },
+    // {
+    //     id: 4,
+    //     title: 'Projects',
+    //     path: '/project',
+    // },
     {
-        id: 4,
-        title: 'Projects',
-        path: '/project',
-    },
-    {
-        id: 5,
+        id: 2,
         title: 'Blogs',
         path: '/blog',
     },
@@ -85,9 +85,9 @@ const Links = ({ isAuthenticated, isAdmin }) => {
                         </Button>
                     </NavigationMenuItem>
                 )}
-                <NavigationMenuItem>
+                {/* <NavigationMenuItem>
                     <DropdownTheme />
-                </NavigationMenuItem>
+                </NavigationMenuItem> */}
             </NavigationMenuList>
         </NavigationMenu>
     );

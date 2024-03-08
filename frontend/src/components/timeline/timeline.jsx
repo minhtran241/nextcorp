@@ -4,33 +4,33 @@ import fs from 'fs/promises';
 import path from 'path';
 
 // * FETCH MILESTONES FROM API
-const getMilestones = async () => {
-    const res = await alovaInstance
-        .Get(`/milestone`, {
-            localCache: null,
-        })
-        .send();
-    if (!res.ok) {
-        throw new Error('Something went wrong');
-    }
-    const data = await res.json();
-    return data;
-};
+// const getMilestones = async () => {
+//     const res = await alovaInstance
+//         .Get(`/milestone`, {
+//             localCache: null,
+//         })
+//         .send();
+//     if (!res.ok) {
+//         throw new Error('Something went wrong');
+//     }
+//     const data = await res.json();
+//     return data;
+// };
 
 // * FETCH MILESTONES FROM LOCAL JSON
-// const DATA_ATTRS_DIR = path.join(process.cwd(), 'data', 'milestone');
-// const DATA_ATTRS_FILE = path.join(DATA_ATTRS_DIR, 'milestones.json');
-// const getMilestones = async () => {
-//     const milestonesData = await fs.readFile(
-//         path.join(DATA_ATTRS_FILE),
-//         'utf-8'
-//     );
-//     const milestones = JSON.parse(milestonesData);
-//     const sortedMilestones = milestones.sort((a, b) => {
-//         return new Date(a.date) - new Date(b.date);
-//     });
-//     return sortedMilestones;
-// };
+const DATA_ATTRS_DIR = path.join(process.cwd(), 'data', 'milestone');
+const DATA_ATTRS_FILE = path.join(DATA_ATTRS_DIR, 'milestones.json');
+const getMilestones = async () => {
+    const milestonesData = await fs.readFile(
+        path.join(DATA_ATTRS_FILE),
+        'utf-8'
+    );
+    const milestones = JSON.parse(milestonesData);
+    const sortedMilestones = milestones.sort((a, b) => {
+        return new Date(a.date) - new Date(b.date);
+    });
+    return sortedMilestones;
+};
 
 const Timeline = async () => {
     const milestones = await getMilestones();

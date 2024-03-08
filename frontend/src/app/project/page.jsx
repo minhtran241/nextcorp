@@ -10,33 +10,33 @@ const DATA_ATTRS_DIR = path.join(process.cwd(), 'data', 'project');
 const DATA_ATTRS_FILE = path.join(DATA_ATTRS_DIR, 'projects.json');
 
 // * Fetch projects from API
-const getProjects = async (limit) => {
-    const res = await alovaInstance.Get(`/project?limit=${limit}`, {
-        localCache: null,
-    });
-    if (!res.ok) {
-        throw new Error('Something went wrong');
-    }
-    const data = await res.json();
-    // console.log(data);
-    return data;
-};
+// const getProjects = async (limit) => {
+//     const res = await alovaInstance.Get(`/project?limit=${limit}`, {
+//         localCache: null,
+//     });
+//     if (!res.ok) {
+//         throw new Error('Something went wrong');
+//     }
+//     const data = await res.json();
+//     // console.log(data);
+//     return data;
+// };
 
 // * Fetch projects from file system
-// const getProjects = async (limit) => {
-//     try {
-//         // Read project data from JSON file
-//         const projectsData = await fs.readFile(
-//             path.join(DATA_ATTRS_FILE),
-//             'utf-8'
-//         );
-//         const projects = JSON.parse(projectsData);
-//         return projects.slice(0, limit);
-//     } catch (error) {
-//         console.error('Error fetching projects:', error);
-//         throw new Error('Failed to fetch projects');
-//     }
-// };
+const getProjects = async (limit) => {
+    try {
+        // Read project data from JSON file
+        const projectsData = await fs.readFile(
+            path.join(DATA_ATTRS_FILE),
+            'utf-8'
+        );
+        const projects = JSON.parse(projectsData);
+        return projects.slice(0, limit);
+    } catch (error) {
+        console.error('Error fetching projects:', error);
+        throw new Error('Failed to fetch projects');
+    }
+};
 
 const ProjectPage = async () => {
     const projects = await getProjects(PROJECT_FETCH_LIMIT);

@@ -38,14 +38,27 @@ interface TokenHandlerProps {
     refreshJwt: any;
     cookie: { refresh_token: string };
     set: any;
+    body: any;
 }
 
-const updateLastLogin = (username: string) => {
+const updateLastLogin = async (username: string) => {
     const lastLogin = new Date();
-    pool.query('UPDATE public.users SET last_login = $1 WHERE username = $2', [
-        lastLogin,
-        username,
-    ]);
+    await pool.query(
+        'UPDATE public.users SET last_login = $1 WHERE username = $2',
+        [lastLogin, username]
+    );
+};
+
+const insertRefreshToken = async (token: string, username: string) => {
+    let userId = await pool.query(
+        'SELECT id FROM public.users WHERE username = $1',
+        [username]
+    );
+    userId = userId.rows[0].id;
+    await pool.query(
+        'INSERT INTO public.refresh_tokens (token, user_id) VALUES ($1, $2) ON CONFLICT DO NOTHING',
+        [token, userId]
+    );
 };
 
 export const authHandler = {
@@ -76,17 +89,12 @@ export const authHandler = {
                 throw new APIError(401, passwordIncorrect);
             }
             const payload = {
-                username: user.username,
+                username: username,
                 role: user.is_admin ? 'admin' : 'user',
             };
             const accessToken = await jwt.sign(payload);
             const refreshToken = await refreshJwt.sign(payload);
 
-            // setCookie('access_token', accessToken, {
-            //     maxAge: 15 * 60,
-            //     path: '/',
-            // });
-            // Set cookie to refresh token and header to access token
             setCookie('refresh_token', refreshToken, {
                 maxAge: 15 * 60,
                 path: '/',
@@ -107,7 +115,8 @@ export const authHandler = {
                 },
                 timestamp: new Date(),
             };
-            updateLastLogin(username);
+            await updateLastLogin(username);
+            await insertRefreshToken(refreshToken, username);
             return response;
         } catch (error: any) {
             throw new APIError(
@@ -141,7 +150,7 @@ export const authHandler = {
             );
             const user = newUserRows[0];
             const payload = {
-                username: user.username,
+                username: username,
                 role: user.is_admin ? 'admin' : 'user',
             };
             const accessToken = await jwt.sign(payload);
@@ -167,6 +176,7 @@ export const authHandler = {
                 },
                 timestamp: new Date(),
             };
+            await insertRefreshToken(refreshToken, username);
             return response;
         } catch (error: any) {
             throw new APIError(
@@ -176,81 +186,23 @@ export const authHandler = {
         }
     },
 
-    // logout: async ({
-    //     setCookie,
-    //     set,
-    // }: AuthHandlerProps): Promise<ApiResponse> => {
-    //     setCookie('access_token', '', { maxAge: 0, path: '/' });
-    //     set.status = 200;
-    //     const response: ApiResponse = {
-    //         status: 200,
-    //         message: logoutSuccess,
-    //         timestamp: new Date(),
-    //     };
-    //     return response;
-    // },
-
-    // createTokens: async ({
-    //     jwt,
-    //     refreshJwt,
-    //     body,
-    //     set,
-    // }: TokenHandlerProps): Promise<ApiResponse> => {
-    //     try {
-    //         const { username } = body;
-    //         const { rows }: QueryResult<User> = await pool.query(
-    //             'SELECT * FROM public.users WHERE username = $1',
-    //             [username]
-    //         );
-    //         const user = rows[0];
-    //         if (!user) {
-    //             set.status = 404;
-    //             throw new APIError(404, userNotFound);
-    //         }
-    //         const payload = {
-    //             username: user.username,
-    //             role: user.is_admin ? 'admin' : 'user',
-    //         };
-    //         const accessToken = await jwt.sign(payload);
-    //         const refreshToken = await refreshJwt.sign(payload);
-    //         await pool.query(
-    //             'INSERT INTO public.refresh_tokens (user_id, token) VALUES ($1, $2)',
-    //             [user.id, refreshToken]
-    //         );
-    //         set.status = 201;
-    //         const response: ApiResponse = {
-    //             status: 201,
-    //             message: 'Token created',
-    //             data: {
-    //                 accessToken,
-    //                 refreshToken,
-    //             },
-    //             timestamp: new Date(),
-    //         };
-    //         return response;
-    //     } catch (error: any) {
-    //         throw new APIError(
-    //             error.statusCode || 500,
-    //             error.message || internalServerError
-    //         );
-    //     }
-    // },
-
     refreshToken: async ({
         jwt,
         refreshJwt,
-        cookie: { refresh_token },
+        cookie,
         set,
+        body,
     }: TokenHandlerProps): Promise<ApiResponse> => {
         try {
-            const profile = await refreshJwt.verify(refresh_token);
+            const refreshToken = cookie.refresh_token || body.refreshToken;
+            const profile = await refreshJwt.verify(refreshToken);
             if (!profile) {
                 set.status = 404;
                 throw new APIError(404, tokenInvalid);
             }
             const { rows }: QueryResult<RefreshToken> = await pool.query(
                 'SELECT * FROM public.refresh_tokens WHERE token = $1 AND revoked_at IS NULL',
-                [refresh_token]
+                [refreshToken]
             );
             const auth = rows[0];
             if (!auth) {
@@ -280,16 +232,18 @@ export const authHandler = {
         refreshJwt,
         cookie: { refresh_token },
         set,
+        body,
     }: TokenHandlerProps): Promise<ApiResponse> => {
         try {
-            const profile = await refreshJwt.verify(refresh_token);
+            const refreshToken = refresh_token || body.refreshToken;
+            const profile = await refreshJwt.verify(refreshToken);
             if (!profile) {
                 set.status = 404;
                 throw new APIError(404, tokenInvalid);
             }
             const { rows }: QueryResult<RefreshToken> = await pool.query(
                 'SELECT * FROM public.refresh_tokens WHERE token = $1 AND revoked_at IS NULL',
-                [refresh_token]
+                [refreshToken]
             );
             const auth = rows[0];
             if (!auth) {
@@ -298,7 +252,7 @@ export const authHandler = {
             }
             await pool.query(
                 'UPDATE public.refresh_tokens SET revoked_at = $1 WHERE token = $2',
-                [new Date(), refresh_token]
+                [new Date(), refreshToken]
             );
             set.status = 200;
             const response: ApiResponse = {

@@ -15,49 +15,49 @@ const DATA_ATTRS_FILE = path.join(DATA_ATTRS_DIR, 'projects.json');
 const DATA_CONTENTS_DIR = path.join(DATA_ATTRS_DIR, 'contents');
 
 // * Get projects from API
-const getProject = async (slug) => {
-    const res = await alovaInstance
-        .Get(`/project/${slug}`, {
-            localCache: null,
-        })
-        .send();
-    if (!res.ok) {
-        throw new Error('Failed to fetch project');
-    }
-    let data = await res.json();
-    // Read markdown content from file system
-    const content = await fs.readFile(
-        path.join(process.cwd(), 'data', 'project', 'contents', `${slug}.md`),
-        'utf-8'
-    );
-    data.content = content;
-    return data;
-};
-
-// * Get project from file system
 // const getProject = async (slug) => {
-//     try {
-//         // Read project data from JSON file
-//         const projectsData = await fs.readFile(
-//             path.join(DATA_ATTRS_FILE),
-//             'utf-8'
-//         );
-//         const projects = JSON.parse(projectsData);
-//         const project = projects.find((project) => project.slug === slug);
-
-//         // Read markdown content from file system
-//         const content = await fs.readFile(
-//             path.join(DATA_CONTENTS_DIR, `${slug}.md`),
-//             'utf-8'
-//         );
-//         project.content = content;
-
-//         return project;
-//     } catch (error) {
-//         console.error('Error fetching project:', error);
+//     const res = await alovaInstance
+//         .Get(`/project/${slug}`, {
+//             localCache: null,
+//         })
+//         .send();
+//     if (!res.ok) {
 //         throw new Error('Failed to fetch project');
 //     }
+//     let data = await res.json();
+//     // Read markdown content from file system
+//     const content = await fs.readFile(
+//         path.join(process.cwd(), 'data', 'project', 'contents', `${slug}.md`),
+//         'utf-8'
+//     );
+//     data.content = content;
+//     return data;
 // };
+
+// * Get project from file system
+const getProject = async (slug) => {
+    try {
+        // Read project data from JSON file
+        const projectsData = await fs.readFile(
+            path.join(DATA_ATTRS_FILE),
+            'utf-8'
+        );
+        const projects = JSON.parse(projectsData);
+        const project = projects.find((project) => project.slug === slug);
+
+        // Read markdown content from file system
+        const content = await fs.readFile(
+            path.join(DATA_CONTENTS_DIR, `${slug}.md`),
+            'utf-8'
+        );
+        project.content = content;
+
+        return project;
+    } catch (error) {
+        console.error('Error fetching project:', error);
+        throw new Error('Failed to fetch project');
+    }
+};
 
 const SingleProjectContent = async ({ project }) => {
     return (
