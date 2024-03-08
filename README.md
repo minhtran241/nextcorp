@@ -44,18 +44,18 @@ Nextcorp is a company showcase website built with Next.js frontend, ElysiaJS as 
 
 ## Data Flow
 
-![Data Flow](https://github.com/minhtran241/nextcorp/blob/main/frontend/docs/diagrams/data-flow-diagram.png)
+![Data Flow](/frontend/docs/diagrams/data-flow-diagram.png)
 
 ## Screenshots
 
 | Register | Login | Blog Page |
 |:---------:|:---------:|:---------:|
-| ![Register Page](https://github.com/minhtran241/nextcorp/blob/main/frontend/public/screenshots/register.png) | ![Login Page](https://github.com/minhtran241/nextcorp/blob/main/frontend/public/screenshots/login.png) | ![Blog Page](https://github.com/minhtran241/nextcorp/blob/main/frontend/public/screenshots/blog.png) |
+| ![Register Page](/frontend/public/screenshots/register.png) | ![Login Page](/frontend/public/screenshots/login.png) | ![Blog Page](/frontend/public/screenshots/blog.png) |
 
 
 | Home Page | Single Blog Page |
 |:---------:|:---------:| 
-| ![Home Page](https://github.com/minhtran241/nextcorp/blob/main/frontend/public/screenshots/home.png) | ![Single Blog Page](https://github.com/minhtran241/nextcorp/blob/main/frontend/public/screenshots/single_blog.png) |
+| ![Home Page](/frontend/public/screenshots/home.png) | ![Single Blog Page](/frontend/public/screenshots/single_blog.png) |
 
 ## Authentication
 
