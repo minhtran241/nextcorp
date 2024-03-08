@@ -16,6 +16,7 @@
 ## Overview
 Nextcorp is a company showcase website built with Next.js frontend, ElysiaJS as API, and PostgreSQL database. It serves as a platform for companies to showcase their products, services, and blog posts.
 
+
 ## Routes
 
 1. `/`: Home page showcasing company information and featured products/services.
@@ -39,16 +40,21 @@ Nextcorp is a company showcase website built with Next.js frontend, ElysiaJS as 
 - **API**: ElysiaJS
 - **Database**: PostgreSQL
 
+
+## Data Flow
+
+![Data Flow](https://github.com/minhtran241/nextcorp/blob/main/frontend/docs/diagrams/data-flow-diagram.png)
+
 ## Screenshots
 
-| Register | Login |
-|:---------:|:---------:|
-| ![Register Page](https://github.com/minhtran241/nextcorp/blob/main/frontend/public/screenshots/register.png) | ![Login Page](https://github.com/minhtran241/nextcorp/blob/main/frontend/public/screenshots/login.png) |
+| Register | Login | Blog Page |
+|:---------:|:---------:|:---------:|
+| ![Register Page](https://github.com/minhtran241/nextcorp/blob/main/frontend/public/screenshots/register.png) | ![Login Page](https://github.com/minhtran241/nextcorp/blob/main/frontend/public/screenshots/login.png) | ![Blog Page](https://github.com/minhtran241/nextcorp/blob/main/frontend/public/screenshots/blog.png) |
 
 
-| Home Page | Blog Page | Single Blog Page
-|:---------:|:---------:|:---------:| 
-| ![Home Page](https://github.com/minhtran241/nextcorp/blob/main/frontend/public/screenshots/home.png) | ![Blog Page](https://github.com/minhtran241/nextcorp/blob/main/frontend/public/screenshots/blog.png) | ![Single Blog Page](https://github.com/minhtran241/nextcorp/blob/main/frontend/public/screenshots/single_blog.png) |
+| Home Page | Single Blog Page |
+|:---------:|:---------:| 
+| ![Home Page](https://github.com/minhtran241/nextcorp/blob/main/frontend/public/screenshots/home.png) | ![Single Blog Page](https://github.com/minhtran241/nextcorp/blob/main/frontend/public/screenshots/single_blog.png) |
 
 ## Authentication
 
