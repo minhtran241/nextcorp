@@ -9,6 +9,7 @@
 - [Routes](#routes)
 - [Features](#features)
 - [Technologies Used](#technologies-used)
+- [Data Flow](#data-flow)
 - [Screenshots](#screenshots)
 - [Authentication](#authentication)
 - [Creator](#creator)
