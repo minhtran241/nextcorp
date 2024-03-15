@@ -9,7 +9,7 @@ import {
     AccordionTrigger,
 } from '@/components/ui/accordion';
 import { Send } from 'lucide-react';
-import CalendlyEmbed from '../calendly/CalendlyEmbed';
+import CalendlyEmbed from '@/components/calendly/CalendlyEmbed';
 
 export const metadata = {
     title: 'Contact Page',
