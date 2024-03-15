@@ -4,7 +4,7 @@ const CalendlyEmbed = () => {
             <div
                 class="calendly-inline-widget"
                 data-url="https://calendly.com/nextcorp/30min"
-                style={{ minWidth: '320px', height: '750px' }}
+                style={{ minWidth: '320px', height: '580px' }}
             ></div>
             <script
                 type="text/javascript"
