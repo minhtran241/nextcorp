@@ -30,6 +30,11 @@ const links = [
         title: 'Blogs',
         path: '/blog',
     },
+    {
+        id: 3,
+        title: 'Contact',
+        path: '/contact',
+    },
 ];
 
 const Links = ({ isAuthenticated, isAdmin }) => {
