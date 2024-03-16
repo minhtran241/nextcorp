@@ -15,8 +15,6 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { commands } from '@uiw/react-md-editor';
 import { useTheme } from 'next-themes';
 
-// import * as commands from '@uiw/react-md-editor/commands';
-
 const help = {
     name: 'help',
     keyCommand: 'help',
@@ -36,13 +34,6 @@ const help = {
 
 const MDEditor = dynamic(() => import('@uiw/react-md-editor'), { ssr: false });
 
-// const RichTextEditor = dynamic(
-//     () => import('@/components/richtextEditor/richtextEditor'),
-//     {
-//         ssr: false,
-//     }
-// );
-
 const AdminPostForm = ({ userId }) => {
     let [state, formAction] = useFormState(addPost, undefined);
     const [editorValue, setEditorValue] = useState('');
@@ -60,11 +51,7 @@ const AdminPostForm = ({ userId }) => {
         }
     }, [state]);
 
-    // check if dark mode is enabled in local storage
-    // const darkMode = localStorage ? localStorage.getItem('dark') : false;
-
     return (
-        // {/* switch the data-color-mode attribute to dark when dark */}
         <form action={formAction} className="flex flex-col gap-5" id="postForm">
             <div className="flex flex-row">
                 <SquarePen className="mr-4" />{' '}
@@ -94,11 +81,6 @@ const AdminPostForm = ({ userId }) => {
                 className="p-5"
                 id="img"
             />
-            {/* <RichTextEditor
-                name="content"
-                value={editorValue}
-                onChange={setEditorValue}
-            /> */}
             <div data-color-mode={theme}>
                 <input type="hidden" name="content" value={editorValue} />
                 <MDEditor
@@ -120,7 +102,7 @@ const AdminPostForm = ({ userId }) => {
             </div>
             <Button
                 type="submit"
-                className="p-5 bg-[#0033A0] text-white hover:bg-blue-800"
+                className="p-5 bg-[#3280f6] text-white hover:bg-[#2769b8]"
                 disabled={state?.loading}
             >
                 Submit

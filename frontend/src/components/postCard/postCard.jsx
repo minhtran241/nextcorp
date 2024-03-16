@@ -2,45 +2,44 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 const PostCard = ({ post }) => {
-    const createdAt = new Date(post.created_at);
-    const month = createdAt.toLocaleString('default', { month: 'long' });
-    const date = new Date(post.created_at).getDate();
-    console.log(post);
+    const date = new Date(post.created_at).toLocaleDateString('en-US', {
+        month: 'long',
+        day: 'numeric',
+    });
     return (
-        <div
-            className="wow fadeInUp relative overflow-hidden"
-            data-wow-delay=".1s"
-        >
-            <div className="overflow-hidden">
-                <Link href={`/blog/${post.slug}`}>
-                    <div className="relative h-[218px] w-full">
+        <>
+            <div className="w-full px-4 md:w-1/2 lg:w-1/3">
+                <div className="mb-10 w-full">
+                    <div className="mb-8 overflow-hidden rounded">
                         <Image
-                            className="rounded-md"
                             src={post.thumbnail}
                             alt={post.title}
-                            fill
+                            className="w-full"
+                            width={500}
+                            height={500}
                         />
-                        <div className="absolute right-0 top-0 mr-3 mt-3 flex h-[75px] w-[75px] flex-col items-center justify-center rounded-full px-4 text-sm transition duration-500 ease-in-out dark:text-white dark:bg-black border border-black dark:border-white bg-white">
-                            <span className="font-bold">{date}</span>
-                            <small>{month}</small>
-                        </div>
                     </div>
-                </Link>
-                <div className="py-4">
-                    <Link
-                        href={`/blog/${post.slug}`}
-                        className="inline-block text-xl font-semibold uppercase transition ease-in-out duration-300"
-                    >
-                        {post.title}
-                    </Link>
-                    <p className="text-md text-justify font-light italic text-gray-600">
-                        {post.description?.length > 150
-                            ? `${post.description?.substring(0, 150)}...`
-                            : post.description}
-                    </p>
+                    <div>
+                        {date && (
+                            <span className="mb-5 inline-block rounded bg-[#3280f6] px-4 py-1 text-center text-xs font-semibold leading-loose text-white">
+                                {date}
+                            </span>
+                        )}
+                        <h3>
+                            <Link
+                                href={`/blog/${post.slug}`}
+                                className="mb-4 inline-block text-xl font-semibold text-dark hover:text-[#3280f6] dark:text-white sm:text-2xl lg:text-xl xl:text-2xl"
+                            >
+                                {post.title}
+                            </Link>
+                        </h3>
+                        <p className="text-base text-body-color dark:text-dark-6">
+                            {post.description}
+                        </p>
+                    </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 };
 

@@ -21,7 +21,7 @@ const Footer = () => {
         { icon: <Github className="h-[1.2rem] w-[1.2rem]" /> },
     ];
     return (
-        <div className="p-12 mt-12 bg-black text-white dark:bg-gray-900 dark:text-white">
+        <div className="p-12 mt-12 bg-[#3280f6] text-white dark:bg-gray-900 dark:text-white">
             {/* footer div all */}
             <div className="flex justify-between flex-col md:flex-row items-center md:items-start md:gap-[5rem] sm:gap-[5rem] text-left">
                 {/* logo side */}

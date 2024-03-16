@@ -1,5 +1,4 @@
 import LoginForm from '@/components/loginForm/loginForm';
-import styles from './login.module.css';
 import { Github, Mail } from 'lucide-react';
 import { cookies } from 'next/headers';
 import jwt from 'jsonwebtoken';
@@ -26,7 +25,7 @@ const LoginPage = async () => {
     }
 
     return (
-        <div className={styles.container}>
+        <div className="flex items-center justify-center h-[70vh]">
             <div className="flex flex-col items-center justify-center gap-4 w-[500px] p-[50px] dark:border dark:border-gray-700 dark:text-white rounded-lg shadow-lg">
                 {/* logo image */}
                 <div className="flex items-center justify-center pb-4">

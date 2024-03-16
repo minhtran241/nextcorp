@@ -1,7 +1,5 @@
 import PostCard from '@/components/postCard/postCard';
 import { alovaInstance } from '@/lib/alova';
-import fs from 'fs/promises';
-import path from 'path';
 
 // * Fetch data from API
 const getPosts = async () => {
@@ -41,15 +39,15 @@ const getPosts = async () => {
 const BlogPage = async () => {
     const posts = await getPosts();
     return (
-        // <div className="container">
-        <div className="grid grid-cols-1 gap-x-8 gap-y-10 md:grid-cols-2 md:gap-x-6 lg:gap-x-8 xl:grid-cols-3">
-            {posts.map((post, i) => (
-                <div className="w-full" key={i}>
-                    <PostCard post={post} />
-                </div>
-            ))}
+        <div className="container">
+            <div className="-mx-4 flex flex-wrap">
+                {posts.map((post, i) => (
+                    <div className="w-full" key={i}>
+                        <PostCard post={post} />
+                    </div>
+                ))}
+            </div>
         </div>
-        // </div>
     );
 };
 

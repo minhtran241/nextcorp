@@ -1,8 +1,6 @@
 'use client';
 
 import { login } from '@/lib/action';
-import styles from './loginForm.module.css';
-// import { useFormState } from 'react-dom';
 import Link from 'next/link';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -96,7 +94,7 @@ const LoginForm = () => {
 
     return (
         <Form {...form}>
-            <form onSubmit={onSubmit} className={styles.form}>
+            <form onSubmit={onSubmit} className="flex flex-col gap-5">
                 <FormField
                     control={form.control}
                     name="username"
@@ -189,7 +187,11 @@ const LoginForm = () => {
                         </FormItem>
                     )}
                 />
-                <Button type="submit" disabled={isPending} className="">
+                <Button
+                    type="submit"
+                    disabled={isPending}
+                    className="bg-[#3280f6] hover:bg-[#2a6cc9] text-white"
+                >
                     Login
                 </Button>
                 <Link href="/register">

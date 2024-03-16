@@ -5,7 +5,7 @@ import Links from './links/Links';
 const Navbar = async ({ isAuthenticated, isAdmin }) => {
     // const session = await auth();
     return (
-        <div className="h-[80px] flex justify-between items-center px-12 bg-black text-white dark:bg-gray-900">
+        <div className="h-[80px] flex justify-between items-center px-12 bg-[#3280f6] text-white dark:bg-gray-900">
             <Link href="/">
                 <Image
                     src="/logo.svg"

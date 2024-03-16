@@ -1,16 +1,21 @@
-const CalendlyEmbed = () => {
+import Script from 'next/script';
+
+const CalendlyEmbed = ({ url }) => {
+    const showDetails = 0;
+    const showCookies = 0;
+
     return (
         <>
             <div
-                class="calendly-inline-widget"
-                data-url="https://calendly.com/nextcorp/30min"
-                style={{ minWidth: '320px', height: '580px' }}
+                className="calendly-inline-widget w-full min-w-[320px] h-[700px]"
+                data-url={`${url}?primary_color=3280f6&hide_landing_page_details=${showDetails}&hide_gdpr_banner=${showCookies}`}
+                style={{ colorScheme: 'light' }}
             ></div>
-            <script
+            <Script
                 type="text/javascript"
                 src="https://assets.calendly.com/assets/external/widget.js"
                 async
-            ></script>
+            />
         </>
     );
 };

@@ -28,13 +28,11 @@ const AdminSingleUser = ({ user }) => {
     });
     return (
         <>
-            <div
-                className={`${styles.user} hover:bg-[#0033A0] hover:text-white hover:rounded-md hover:shadow-md p-4 dark:hover:bg-white dark:hover:text-black`}
-            >
+            <div className={`${styles.user} p-4 cursor-pointer`}>
                 <HoverCard className={styles.user}>
                     <HoverCardTrigger asChild>
                         <div className={styles.detail}>
-                            <Avatar className="border border-[#0033A0] dark:border-white">
+                            <Avatar className="border border-[#3280f6]">
                                 <AvatarImage
                                     src={user.avatar || '/noAvatar.png'}
                                     alt={user.username}
@@ -42,9 +40,7 @@ const AdminSingleUser = ({ user }) => {
                                 <AvatarFallback>NC</AvatarFallback>
                             </Avatar>
                             {/* <span className={styles.userTitle}>{user.username}</span> */}
-                            <span
-                                className={`${styles.userTitle} cursor-pointer`}
-                            >
+                            <span className={styles.userTitle}>
                                 {user.username}
                             </span>
                         </div>
@@ -59,7 +55,7 @@ const AdminSingleUser = ({ user }) => {
                                 <AvatarFallback>NC</AvatarFallback>
                             </Avatar>
                             <div className="space-y-1">
-                                <h4 className="text-sm font-semibold text-[#0033A0] dark:text-blue-600">
+                                <h4 className="text-sm font-semibold text-[#3280f6]">
                                     {user.username}
                                 </h4>
                                 <p className="text-sm">

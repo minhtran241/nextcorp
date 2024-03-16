@@ -29,13 +29,11 @@ const AdminSinglePost = ({ post }) => {
     });
     return (
         <div>
-            <div
-                className={`${styles.post} hover:bg-[#0033A0] hover:text-white hover:rounded-md hover:shadow-md p-4 dark:hover:bg-white dark:hover:text-black`}
-            >
+            <div className={`${styles.post} p-4`}>
                 <HoverCard className={styles.user}>
                     <HoverCardTrigger asChild>
                         <div className={styles.detail}>
-                            <Avatar className="border border-[#0033A0] dark:border-white">
+                            <Avatar className="border border-[#3280f6]">
                                 <AvatarImage
                                     src={post.thumbnail || '/noAvatar.png'}
                                     alt={post.slug}
@@ -58,7 +56,7 @@ const AdminSinglePost = ({ post }) => {
                             </Avatar>
                             <div className="space-y-1">
                                 <Link
-                                    className="text-sm font-semibold text-[#0033A0] dark:text-blue-600"
+                                    className="text-sm font-semibold text-[#3280f6] hover:underline"
                                     href={`/blog/${post.slug}`}
                                 >
                                     {post.title}

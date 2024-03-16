@@ -58,7 +58,7 @@ export default function RootLayout({ children }) {
                             isAuthenticated={isAuthenticated}
                             isAdmin={isAdmin}
                         />
-                        <div className="container dark:text-white text-black">
+                        <div className="dark:text-white text-black">
                             {children}
                         </div>
                         <Footer />

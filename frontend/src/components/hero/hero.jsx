@@ -1,70 +1,39 @@
-import Image from 'next/image';
 import Link from 'next/link';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Suspense } from 'react';
 import Loading from '@/app/loading';
+import { Button } from '@/components/ui/button';
 
 const HeroComponent = () => {
     return (
         <div>
-            <div className="shadow-lg transform duration-300 easy-in-out">
-                <div className="h-36 overflow-hidden">
-                    <Image
-                        className="rounded-md w-full object-cover"
-                        src="https://nextjs.org/_next/image?url=%2Fdocs%2Fdark%2Fbackground-image.png&w=3840&q=75&dpl=dpl_EYQcSzVmcwA1iK87dHgh1KCHnaqH"
-                        alt="background_image"
-                        width={1600}
-                        height={400}
-                    />
-                </div>
-                <div className="flex justify-center px-5 -mt-12">
-                    <Avatar className="h-32 w-32 bg-white dark:bg-black p-2">
-                        <AvatarImage
-                            className="dark:invert"
-                            src="https://static-00.iconduck.com/assets.00/next-js-icon-2048x2048-5dqjgeku.png"
-                            alt="minhtran"
-                        />
-                        <AvatarFallback>NC</AvatarFallback>
-                    </Avatar>{' '}
-                </div>
-                <div className="">
-                    <div className="text-center px-14">
-                        <h2 className="text-3xl font-semibold">
-                            Nextcorp Project
-                        </h2>
-                        <p className="italic text-sm">Developed by Minh Tran</p>
-                        <div className="flex flex-col items-center gap-1 mt-2">
-                            <Link
-                                href="https://gvsu.edu"
-                                className="font-semibold"
+            <section className="">
+                <div className="mx-auto max-w-screen-xl px-4 py-24 lg:flex lg:h-[45vh] lg:items-center">
+                    <div className="mx-auto max-w-3xl text-center">
+                        <h1 className="bg-[linear-gradient(to_left_top,rgb(50,128,246)_60%,rgb(99,222,191))] bg-clip-text text-3xl font-bold text-transparent sm:text-5xl">
+                            The Automated Data
+                            <span className="sm:block">
+                                {' '}
+                                Movement Platform.{' '}
+                            </span>
+                        </h1>
+
+                        <p className="mx-auto mt-4 max-w-xl sm:text-xl/relaxed">
+                            From small & medium business to big corporation -
+                            Nextcorp is the trusted platform to connect data
+                            from multiple sources into your data platform
+                        </p>
+
+                        <div className="mt-8 flex flex-wrap justify-center gap-4">
+                            <Button
+                                className="block w-full rounded border border-[#3280f6] bg-[#3280f6] hover:bg-transparent text-white focus:outline-none focus:ring active:text-opacity-75 sm:w-auto"
+                                href="#"
                             >
-                                Grand Valley State University
-                            </Link>
-                            <p className="text-gray-600 dark:text-gray-400">
-                                B.S in Computer Science, 2025
-                            </p>
+                                Contact or Book a Live Demo
+                            </Button>
                         </div>
                     </div>
-                    <hr className="mt-6" />
-                    <div className="flex bg-gray-50 dark:bg-gray-800">
-                        <Link
-                            target="_blank"
-                            className="text-center w-1/2 py-2 px-4 uppercase hover:bg-black dark:hover:bg-white dark:hover:text-black hover:text-white font-medium transition"
-                            href="/contact"
-                        >
-                            Contact
-                        </Link>
-                        <div className="border border-gray-200 dark:border-gray-700"></div>
-                        <Link
-                            target="_blank"
-                            className="text-center w-1/2 py-2 px-4 uppercase hover:bg-black dark:hover:bg-white dark:hover:text-black hover:text-white font-medium transition"
-                            href="/resume.pdf"
-                        >
-                            Resume
-                        </Link>
-                    </div>
                 </div>
-            </div>
+            </section>
         </div>
     );
 };

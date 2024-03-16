@@ -1,7 +1,7 @@
 'use client';
 
 import { addUser } from '@/lib/action';
-import styles from './adminUserForm.module.css';
+// import styles from './adminUserForm.module.css';
 import { useFormState } from 'react-dom';
 import { useEffect } from 'react';
 import { Input } from '@/components/ui/input';
@@ -19,44 +19,19 @@ const AdminUserForm = () => {
             document.getElementById('userForm').reset();
             toast.success('Post added successfully');
         }
-        // Show error message by toast
-        // else if (state && state.error) {
-        //     toast.error(state.error);
-        // }
     }, [state]);
     return (
-        <form action={formAction} className={styles.container} id="userForm">
+        <form action={formAction} id="userForm">
             <div className="flex flex-row">
                 <SquarePen className="mr-4" />{' '}
                 <h1 className="mb-4 text-xl font-medium leading-none">
                     Admin User Form
                 </h1>
             </div>
-            {/* <input type="text" name="username" placeholder="Username" /> */}
             <Input type="text" name="username" placeholder="Username" />
-            {/* <input type="email" name="email" placeholder="Email" /> */}
             <Input type="email" name="email" placeholder="Email" />
-            {/* <input type="password" name="password" placeholder="Password" /> */}
             <Input type="password" name="password" placeholder="Password" />
-            {/* <input type="text" name="image" placeholder="Image" /> */}
             <Input type="text" name="image" placeholder="Image" />
-            {/* <select name="isAdmin">
-                <option value="false">Is admin?</option>
-                <option value="false">No</option>
-                <option value="true">Yes</option>
-            </select> */}
-            {/* <Select name="isAdmin">
-                <SelectTrigger>
-                    <SelectValue placeholder="Is admin?" />
-                </SelectTrigger>
-                <SelectContent>
-                    <SelectGroup>
-                        <SelectLabel>Is admin?</SelectLabel>
-                        <SelectItem value="false">No</SelectItem>inU
-                        <SelectItem value="true">Yes</SelectItem>
-                    </SelectGroup>
-                </SelectContent>
-            </Select> */}
             <RadioGroup defaultValue="false" name="isAdmin">
                 <div className="flex items-center space-x-2">
                     <RadioGroupItem value="false" id="r1" />
@@ -67,10 +42,9 @@ const AdminUserForm = () => {
                     <Label htmlFor="r2">Admin</Label>
                 </div>
             </RadioGroup>
-            {/* <button type="submit">Submit</button> */}
             <Button
                 type="submit"
-                className="p-[20px] bg-[#0033A0] text-white hover:bg-blue-800"
+                className="p-[20px] bg-[#3280f6] text-white hover:bg-[#2769b8]"
                 disabled={state?.loading}
             >
                 Submit

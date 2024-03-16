@@ -1,15 +1,6 @@
-import styles from './contact.module.css';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Button } from '@/components/ui/button';
-import {
-    Accordion,
-    AccordionContent,
-    AccordionItem,
-    AccordionTrigger,
-} from '@/components/ui/accordion';
-import { Send } from 'lucide-react';
+import { Home, Mail, Phone } from 'lucide-react';
 import CalendlyEmbed from '@/components/calendly/CalendlyEmbed';
+import ContactForm from '@/components/contactForm/contactForm';
 
 export const metadata = {
     title: 'Contact Page',
@@ -18,102 +9,67 @@ export const metadata = {
 
 const ContactPage = () => {
     return (
-        <div className="flex flex-col gap-12">
+        <div className="flex flex-col gap-12 container">
             <div className="grid grid-cols-1 gap-x-8 gap-y-10 md:grid-cols-2 md:gap-x-6 lg:gap-x-8 xl:grid-cols-2">
-                <div className="flex flex-col gap-4">
-                    <h1 className="text-4xl font-bold">Contact Us</h1>
-                    <div className="relative flex-1">
-                        {/* <Image src="/contact.png" alt="" fill className={styles.img} /> */}
-                        <Accordion type="single" collapsible>
-                            <AccordionItem value="item-5">
-                                <AccordionTrigger>
-                                    Does ShadcnUI offer server-side rendering
-                                    (SSR) support?
-                                </AccordionTrigger>
-                                <AccordionContent>
-                                    Yes, Next.js 14 and ShadcnUI seamlessly
-                                    support server-side rendering, enhancing SEO
-                                    and performance.
-                                </AccordionContent>
-                            </AccordionItem>
-                            <AccordionItem value="item-6">
-                                <AccordionTrigger>
-                                    Can I customize themes in ShadcnUI easily?
-                                </AccordionTrigger>
-                                <AccordionContent>
-                                    Certainly. ShadcnUI provides flexible
-                                    theming capabilities, allowing easy
-                                    customization to match your project's
-                                    design.
-                                </AccordionContent>
-                            </AccordionItem>
-                            <AccordionItem value="item-7">
-                                <AccordionTrigger>
-                                    Is internationalization (i18n) supported in
-                                    ShadcnUI?
-                                </AccordionTrigger>
-                                <AccordionContent>
-                                    Yes, Next.js 14 and ShadcnUI offer robust
-                                    i18n support for building multilingual
-                                    applications.
-                                </AccordionContent>
-                            </AccordionItem>
-                            <AccordionItem value="item-8">
-                                <AccordionTrigger>
-                                    Are there built-in accessibility features in
-                                    ShadcnUI?
-                                </AccordionTrigger>
-                                <AccordionContent>
-                                    Absolutely. ShadcnUI follows best practices
-                                    for accessibility, ensuring compliance with
-                                    WAI-ARIA standards.
-                                </AccordionContent>
-                            </AccordionItem>
-                            <AccordionItem value="item-9">
-                                <AccordionTrigger>
-                                    Does ShadcnUI come with built-in animations?
-                                </AccordionTrigger>
-                                <AccordionContent>
-                                    Yes, ShadcnUI includes default animations
-                                    that enhance the user experience, with
-                                    options to customize or disable as needed.
-                                </AccordionContent>
-                            </AccordionItem>
-                            <AccordionItem value="item-10">
-                                <AccordionTrigger>
-                                    Is ShadcnUI compatible with modern CSS
-                                    frameworks?
-                                </AccordionTrigger>
-                                <AccordionContent>
-                                    Yes, ShadcnUI seamlessly integrates with
-                                    modern CSS frameworks like Tailwind CSS or
-                                    Styled Components, providing flexibility in
-                                    styling options.
-                                </AccordionContent>
-                            </AccordionItem>
-                        </Accordion>
+                <div className="mb-12 max-w-[570px] lg:mb-0">
+                    <h2 className="mb-6 text-[32px] font-bold uppercase text-[#3280f6] sm:text-[40px] lg:text-[36px] xl:text-[40px]">
+                        GET IN TOUCH WITH US
+                    </h2>
+                    <p className="mb-9 text-base leading-relaxed text-body-color dark:text-dark-6">
+                        Pleased to meet you! We are a team of passionate
+                        developers, designers, and marketers who are committed
+                        to providing the best services to our clients. We are
+                        always ready to help you with your project. Please feel
+                        free to contact us.
+                    </p>
+                    <div className="mb-8 flex w-full max-w-[370px]">
+                        <div className="mr-6 flex h-[60px] w-full max-w-[60px] items-center justify-center overflow-hidden rounded bg-primary/5 text-[#3280f6] sm:h-[70px] sm:max-w-[70px]">
+                            <Home />
+                        </div>
+                        <div className="w-full">
+                            <h4 className="mb-1 text-xl font-bold text-dark dark:text-white">
+                                Our Location
+                            </h4>
+                            <p className="text-base text-body-color dark:text-dark-6">
+                                1234 Street Name, City Name, Country Name
+                            </p>
+                        </div>
+                    </div>
+
+                    <div className="mb-8 flex w-full max-w-[370px]">
+                        <div className="mr-6 flex h-[60px] w-full max-w-[60px] items-center justify-center overflow-hidden rounded bg-primary/5 text-[#3280f6] sm:h-[70px] sm:max-w-[70px]">
+                            <Phone />
+                        </div>
+                        <div className="w-full">
+                            <h4 className="mb-1 text-xl font-bold text-dark dark:text-white">
+                                Phone Number
+                            </h4>
+                            <p className="text-base text-body-color dark:text-dark-6">
+                                (+62)81 414 257 9980
+                            </p>
+                        </div>
+                    </div>
+
+                    <div className="mb-8 flex w-full max-w-[370px]">
+                        <div className="mr-6 flex h-[60px] w-full max-w-[60px] items-center justify-center overflow-hidden rounded bg-primary/5 text-[#3280f6] sm:h-[70px] sm:max-w-[70px]">
+                            <Mail />
+                        </div>
+                        <div className="w-full">
+                            <h4 className="mb-1 text-xl font-bold text-dark dark:text-white">
+                                Email Address
+                            </h4>
+                            <p className="text-base text-body-color dark:text-dark-6">
+                                info@yourdomain.com
+                            </p>
+                        </div>
                     </div>
                 </div>
-                <div className="flex flex-col gap-4">
-                    <h1 className="text-4xl font-bold">Contact Us</h1>
-                    <div className={styles.formContainer}>
-                        <form className={styles.form} action="">
-                            <Input type="text" placeholder="Name and Surname" />
-                            <Input type="email" placeholder="Email Address" />
-                            <Input
-                                type="text"
-                                placeholder="Phone Number (Optional)"
-                            />
-                            <Textarea placeholder="Type your message here." />
-                            <Button>
-                                <Send className="mr-2 h-4 w-4" /> Send message
-                            </Button>
-                        </form>
-                    </div>
-                </div>
+                <ContactForm />
             </div>
             <div className="flex flex-col gap-4">
-                <h1 className="text-4xl font-bold">Book a Meeting</h1>
+                <h1 className="text-3xl sm:text-2xl font-bold text-[#3280f6]">
+                    Book a Live Demo or Meeting with Us
+                </h1>
                 <CalendlyEmbed url={process.env.CALENDLY_URL} />
             </div>
         </div>

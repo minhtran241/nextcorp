@@ -22,7 +22,6 @@ const AdminPosts = async () => {
     const posts = await getPosts();
     return (
         <div>
-            {/* <h1>Posts</h1> */}
             <ScrollArea className="rounded-md border h-[540px] border-gray-200">
                 <div className="p-4 ">
                     <div className="flex justify-between items-center">

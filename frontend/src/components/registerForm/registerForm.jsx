@@ -1,8 +1,6 @@
 'use client';
 
 import { register } from '@/lib/action';
-import styles from './registerForm.module.css';
-// import { useFormState } from 'react-dom';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -137,7 +135,7 @@ const RegisterForm = () => {
 
     return (
         <Form {...form}>
-            <form onSubmit={onSubmit} className={styles.form}>
+            <form onSubmit={onSubmit} className="flex flex-col gap-5">
                 <FormField
                     control={form.control}
                     name="username"
@@ -328,7 +326,11 @@ const RegisterForm = () => {
                         </FormItem>
                     )}
                 />
-                <Button type="submit" disabled={isPending} className="">
+                <Button
+                    type="submit"
+                    disabled={isPending}
+                    className="bg-[#3280f6] hover:bg-[#2a6cc9] text-white"
+                >
                     Register
                 </Button>
                 <Link href="/login">

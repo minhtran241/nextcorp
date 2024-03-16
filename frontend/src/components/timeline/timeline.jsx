@@ -1,6 +1,6 @@
-import Milestone from './milestone/milestone';
 import { alovaInstance } from '@/lib/alova';
 import fs from 'fs/promises';
+import { Calendar } from 'lucide-react';
 import path from 'path';
 
 // * FETCH MILESTONES FROM API
@@ -35,42 +35,51 @@ const getMilestones = async () => {
 const Timeline = async () => {
     const milestones = await getMilestones();
     return (
-        <div className="items-center justify-center mt-12">
+        <div className="bg-[linear-gradient(to_left_top,rgb(50,128,246)_60%,rgb(99,222,191))] py-28">
             <div className="max-w-xl mx-auto">
-                <div className="text-center ">
-                    <div className="flex flex-col items-center ">
-                        <h1 className="text-5xl font-semibold leading-tight">
-                            Company Milestones
-                        </h1>
-                        <div className="flex w-24 mt-1 mb-6 overflow-hidden rounded">
-                            <div className="flex-1 h-2 bg-gray-400"></div>
-                            <div className="flex-1 h-2 bg-gray-600"></div>
-                            <div className="flex-1 h-2 bg-black"></div>
-                        </div>
-                    </div>
-                    <p className="mb-8 text-base text-center text-gray-600">
+                <div className="text-center">
+                    <h1 className="text-white text-4xl font-semibold leading-tight mb-4">
+                        Experiences solidified in time
+                    </h1>
+                    <p className="mb-16 text-base text-center text-white">
                         We have been on the market for over 10 years, and we
                         have achieved a lot. Here are some of our milestones.
                     </p>
                 </div>
             </div>
-            <div className="flex flex-col justify-center ">
-                {/* lg:max-w-full */}
-                <div className="w-full mx-auto">
-                    <div className="relative">
-                        <div className="absolute hidden w-1 h-full transform -translate-x-1/2 bg-black dark:bg-white lg:block left-1/2"></div>
-                        <div className="space-y-2 lg:space-y-4">
-                            {milestones.map((milestone, index) => (
-                                <Milestone
-                                    milestone={milestone}
-                                    right={index % 2 === 0}
-                                    key={index}
+
+            <ol className="items-center sm:flex px-52">
+                {milestones.map((milestone, index) => (
+                    <li className="relative mb-6 sm:mb-0" key={index}>
+                        <div className="flex items-center">
+                            <div className="z-10 flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full ring-0 ring-white sm:ring-8 shrink-0">
+                                <Calendar
+                                    size={16}
+                                    className="text-[#3280f6]"
                                 />
-                            ))}
+                            </div>
+                            <div className="hidden sm:flex w-full bg-gray-200 h-0.5"></div>
                         </div>
-                    </div>
-                </div>
-            </div>
+                        <div className="mt-3 sm:pe-8">
+                            <h3 className="text-lg font-semibold text-white">
+                                {milestone.title}
+                            </h3>
+                            <time className="block mb-2 text-sm font-normal leading-none text-white">
+                                {new Date(milestone.date).toLocaleDateString(
+                                    'en-US',
+                                    {
+                                        month: 'short',
+                                        year: 'numeric',
+                                    }
+                                )}
+                            </time>
+                            <p className="text-base font-normal text-white">
+                                {milestone.description}
+                            </p>
+                        </div>
+                    </li>
+                ))}
+            </ol>
         </div>
     );
 };

@@ -24,9 +24,9 @@ const NavLink = ({ item }) => {
         //     href={item.path}
         //     className={`${
         //         styles.container
-        //     } hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black ${
+        //     } hover:bg-[#3280f6] hover:text-white dark:hover:bg-white dark:hover:text-black ${
         //         (pathName === item.path || isSubPath) &&
-        //         'bg-black text-white dark:bg-white dark:text-black'
+        //         'bg-[#3280f6] text-white dark:bg-white dark:text-black'
         //     }`}
         // >
         //     {item.title}
