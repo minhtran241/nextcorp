@@ -33,7 +33,7 @@ export const generateMockPost = (): MockPost => {
         thumbnail: faker.image.url(),
         word_count: faker.number.int({ min: 100, max: 1000 }),
         read_time: faker.number.int({ min: 1, max: 30 }),
-        userId: faker.number.int({ min: 1, max: 2 }),
+        userId: 1,
         isPublished: faker.datatype.boolean(),
     };
 };
@@ -44,7 +44,7 @@ export const generateMockPostAPIPayload = () => {
         description: faker.lorem.sentence(),
         content: faker.lorem.paragraphs(3),
         thumbnail: faker.image.url(),
-        userId: faker.number.int({ min: 1, max: 2 }),
+        userId: 1,
         isPublished: faker.datatype.boolean(),
     };
 };

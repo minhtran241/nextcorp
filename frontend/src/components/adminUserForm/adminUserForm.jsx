@@ -21,7 +21,7 @@ const AdminUserForm = () => {
         }
     }, [state]);
     return (
-        <form action={formAction} id="userForm">
+        <form action={formAction} className="flex flex-col gap-5" id="userForm">
             <div className="flex flex-row">
                 <SquarePen className="mr-4" />{' '}
                 <h1 className="mb-4 text-xl font-medium leading-none">

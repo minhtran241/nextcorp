@@ -31,7 +31,7 @@ const AdminPage = async () => {
     const userId = 1;
 
     return (
-        <div className="container">
+        <div className="container flex flex-col gap-10">
             <div className={styles.row}>
                 <div className={styles.col}>
                     <Suspense fallback={<div>Loading...</div>}>

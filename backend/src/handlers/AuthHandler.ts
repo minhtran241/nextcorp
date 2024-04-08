@@ -71,6 +71,11 @@ export const authHandler = {
     }: AuthHandlerProps): Promise<ApiResponse> => {
         try {
             const { username, password } = body as LoginPayload;
+            console.log(
+                pool.query('SELECT * FROM public.users WHERE username = $1', [
+                    username,
+                ])
+            );
             const { rows }: QueryResult<User> = await pool.query(
                 'SELECT * FROM public.users WHERE username = $1',
                 [username]
@@ -119,6 +124,7 @@ export const authHandler = {
             await insertRefreshToken(refreshToken, username);
             return response;
         } catch (error: any) {
+            console.log(error);
             throw new APIError(
                 error.statusCode || 500,
                 error.message || internalServerError
