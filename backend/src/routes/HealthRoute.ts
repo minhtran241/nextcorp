@@ -1,6 +1,11 @@
 import { Elysia } from 'elysia';
 import ApiResponse from '../types/APIResponse';
 
+/**
+ * configureHealthRoutes object
+ *
+ * This object configures the health routes
+ */
 export const configureHealthRoutes = new Elysia({ prefix: '/health' }).get(
     '/',
     async () => {

@@ -1,3 +1,4 @@
+// Type definition for RefreshToken
 export default interface RefreshToken {
     id: number;
     user_id: number;

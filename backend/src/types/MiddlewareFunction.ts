@@ -1,5 +1,10 @@
 import { Cookie } from 'elysia';
 
+/**
+ * MiddlewareFunction type
+ *
+ * This type defines the middleware function
+ */
 type MiddlewareFunction = (context: {
     body: unknown;
     query: Record<string, string | undefined>;

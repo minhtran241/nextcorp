@@ -1,6 +1,15 @@
 import APIError from '~errors/APIError';
 import MiddlewareFunction from '~types/MiddlewareFunction';
 
+/**
+ * isAuthenticated middleware
+ *
+ * This middleware checks if a user is authenticated
+ *
+ * @param {Object} - An object containing the request context
+ * @returns {Promise} - A promise that resolves to the next middleware
+ * @throws {APIError} - Throws an APIError if an error occurs
+ */
 export const isAuthenticated: MiddlewareFunction = async (context) => {
     const {
         bearer,
@@ -39,6 +48,15 @@ export const isAuthenticated: MiddlewareFunction = async (context) => {
     }
 };
 
+/**
+ * isAdmin middleware
+ *
+ * This middleware checks if a user is an admin
+ *
+ * @param {Object} - An object containing the request context
+ * @returns {Promise} - A promise that resolves to the next middleware
+ * @throws {APIError} - Throws an APIError if an error occurs
+ */
 export const isAdmin: MiddlewareFunction = async (context) => {
     const {
         bearer,

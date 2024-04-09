@@ -1,3 +1,4 @@
+// MockPost interface
 interface MockPost {
     title: string;
     description: string;

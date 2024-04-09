@@ -182,12 +182,12 @@ describe('Auth endpoint', () => {
                     refreshToken: testRefreshToken,
                 }),
             });
-            console.log(
-                jwt.verify(
-                    testRefreshToken,
-                    process.env.JWT_REFRESH || 'refresh'
-                )
-            );
+            // console.log(
+            //     jwt.verify(
+            //         testRefreshToken,
+            //         process.env.JWT_REFRESH || 'refresh'
+            //     )
+            // );
             const res = await app.fetch(req);
             const responseBody = await res.json();
             expect(res.status).toBe(200);

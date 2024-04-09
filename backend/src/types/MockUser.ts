@@ -1,3 +1,4 @@
+// MockUser type
 interface MockUser {
     username: string;
     password: string;

@@ -1,3 +1,4 @@
+// Type definition for User
 export default interface User {
     id: number;
     username: string;

@@ -16,6 +16,7 @@ import cors from '@elysiajs/cors';
 const app = new Elysia();
 const API_PORT = parseInt(process.env.API_PORT || '8080');
 
+// JWT Config
 const jwtConfig = {
     secret: process.env.JWT_SECRET || 'secret',
     alg: 'HS256',
@@ -25,6 +26,7 @@ const jwtConfig = {
     iat: new Date().getTime(),
 };
 
+// Refresh JWT Config
 const refreshJwtConfig = {
     secret: process.env.JWT_REFRESH || 'refresh',
     alg: 'HS256',
@@ -34,6 +36,7 @@ const refreshJwtConfig = {
     iat: new Date().getTime(),
 };
 
+// Error handler
 const errorHandler = ({ error, set }: { error: Error; set: any }) => {
     return {
         status: set.status,
@@ -45,6 +48,7 @@ const errorHandler = ({ error, set }: { error: Error; set: any }) => {
     };
 };
 
+// Configure app
 app.onError(errorHandler)
     .use(cors())
     .use(jwt({ name: 'jwt', ...jwtConfig }))
@@ -72,6 +76,7 @@ app.onError(errorHandler)
 //     );
 // }
 
+// Routes
 app.use(configureHealthRoutes)
     .use(configureAuthRoutes)
     .use(configureUsersRoutes)

@@ -1,6 +1,11 @@
 import { Elysia } from 'elysia';
 import { authHandler } from '~handlers/AuthHandler';
 
+/**
+ * configureAuthRoutes object
+ *
+ * This object configures the auth routes
+ */
 export const configureAuthRoutes = new Elysia({ prefix: '/auth' })
     .guard({ body: authHandler.validateLogin }, (guardApp) =>
         guardApp.post('/login', authHandler.login)

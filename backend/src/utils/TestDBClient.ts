@@ -13,6 +13,22 @@ import MockUser from '~types/MockUser';
 //     password: process.env.DB_PASS,
 // });
 
+/**
+ * TestDBClient class
+ *
+ * This class is used to interact with the test database
+ *
+ * @class
+ * @public
+ * @property {Client} client - The database client
+ * @method connect - Connect to the database
+ * @method disconnect - Disconnect from the database
+ * @method createMockPost - Create a new post
+ * @method createMockUser - Create a new user
+ * @method deletePostById - Delete a post by id
+ * @method deletePostsByTitle - Delete posts by slug title
+ * @method deleteUserByUsername - Delete user by username
+ */
 class TestDBClient {
     client: Client = new Client({
         host: process.env.DB_HOST,
@@ -22,10 +38,20 @@ class TestDBClient {
         password: process.env.DB_PASS,
     });
 
+    /**
+     * connect method
+     *
+     * This method connects to the database
+     */
     async connect() {
         await this.client.connect();
     }
 
+    /**
+     * disconnect method
+     *
+     * This method disconnects from the database
+     */
     async disconnect() {
         await this.client.end();
     }
@@ -34,7 +60,14 @@ class TestDBClient {
     //     return await this.client.query(query, values);
     // }
 
-    // Create a new post
+    /**
+     * createMockPost method
+     *
+     * This method creates a new post
+     *
+     * @returns {Promise<Post>} - A promise that resolves to a post object
+     * @throws {Error} - Throws an error if an error occurs
+     */
     async createMockPost(): Promise<Post> {
         const payload: MockPost = generateMockPost();
         const res = await this.client.query(
@@ -51,11 +84,19 @@ class TestDBClient {
                 payload.isPublished,
             ]
         );
-        console.log(res.rows[0]);
+        // console.log(res.rows[0]);
         return res.rows[0];
     }
 
-    // Create a new user
+    /**
+     * createMockUser method
+     *
+     * This method creates a new user
+     *
+     * @param {boolean} isAdmin - A boolean value to determine if the user is an admin
+     * @returns {Promise<User>} - A promise that resolves to a user object
+     * @throws {Error} - Throws an error if an error occurs
+     */
     async createMockUser(isAdmin: boolean): Promise<User> {
         const payload: MockUser = generateMockUser(isAdmin);
         const res = await this.client.query(
@@ -70,7 +111,15 @@ class TestDBClient {
         return res.rows[0];
     }
 
-    // Delete a post by id
+    /**
+     * deletePostById method
+     *
+     * This method deletes a post by id
+     *
+     * @param {number} id - The id of the post to delete
+     * @returns {Promise<Post>} - A promise that resolves to a post object
+     * @throws {Error} - Throws an error if an error occurs
+     */
     async deletePostById(id: number): Promise<Post> {
         const res = await this.client.query(
             'DELETE FROM public.posts WHERE id = $1 RETURNING *',
@@ -79,7 +128,15 @@ class TestDBClient {
         return res.rows[0];
     }
 
-    // Delete posts by slug title
+    /**
+     * deletePostsByTitle method
+     *
+     * This method deletes posts by title
+     *
+     * @param {string} title - The title of the post to delete
+     * @returns {Promise<Post>} - A promise that resolves to a post object
+     * @throws {Error} - Throws an error if an error occurs
+     */
     async deletePostsByTitle(title: string): Promise<Post> {
         const res = await this.client.query(
             'DELETE FROM public.posts WHERE title = $1 RETURNING *',
@@ -88,7 +145,15 @@ class TestDBClient {
         return res.rows[0];
     }
 
-    // Delete user by username
+    /**
+     * deleteUserByUsername method
+     *
+     * This method deletes a user by username
+     *
+     * @param {string} username - The username of the user to delete
+     * @returns {Promise<User>} - A promise that resolves to a user object
+     * @throws {Error} - Throws an error if an error occurs
+     */
     async deleteUserByUsername(username: string): Promise<User> {
         const res = await this.client.query(
             'DELETE FROM public.users WHERE username = $1 RETURNING *',

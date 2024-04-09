@@ -14,6 +14,11 @@ import { Client, Pool } from 'pg';
 
 // export default sql;
 
+/**
+ * Create a new pool of connections to the database
+ *
+ * @see https://node-postgres.com/api/pool
+ */
 const pool: Pool = new Pool({
     host: process.env.DB_HOST,
     port: parseInt(process.env.DB_PORT || '5423'),

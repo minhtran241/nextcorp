@@ -6,6 +6,12 @@ import APIError from '~errors/APIError';
 import ApiResponse from '~types/APIResponse';
 
 const MAX_USERS_FETCH: number = parseInt(process.env.MAX_USERS_FETCH || '100');
+
+/**
+ * createUserPayload interface
+ *
+ * This interface defines the payload for creating a new user
+ */
 interface createUserPayload {
     username: string;
     password: string;
@@ -14,12 +20,21 @@ interface createUserPayload {
     isAdmin: boolean;
 }
 
-interface loginPayload {
-    username: string;
-    password: string;
-}
-
+/**
+ * usersHandler object
+ *
+ * This object contains methods for handling user requests
+ */
 export const usersHandler = {
+    /**
+     * getUsers method
+     *
+     * This method fetches all users from the database
+     *
+     * @param {} - No parameters
+     * @returns {Promise} - A promise that resolves to an array of users
+     * @throws {APIError} - Throws an APIError if an error occurs
+     */
     getUsers: async ({}) => {
         try {
             const client = await pool.connect();
@@ -39,6 +54,15 @@ export const usersHandler = {
         }
     },
 
+    /**
+     * getUser method
+     *
+     * This method fetches a user by id from the database
+     *
+     * @param {Object} - An object containing the user id
+     * @returns {Promise} - A promise that resolves to a user object
+     * @throws {APIError} - Throws an APIError if an error occurs
+     */
     getUser: async ({
         params: { id },
         set,
@@ -66,6 +90,15 @@ export const usersHandler = {
         }
     },
 
+    /**
+     * createUser method
+     *
+     * This method creates a new user
+     *
+     * @param {Object} - An object containing the user details
+     * @returns {Promise} - A promise that resolves to a user object
+     * @throws {APIError} - Throws an APIError if an error occurs
+     */
     createUser: async ({
         body: { username, password, email, avatar, isAdmin },
         set,
@@ -102,6 +135,15 @@ export const usersHandler = {
         }
     },
 
+    /**
+     * deleteUser method
+     *
+     * This method deletes a user by id
+     *
+     * @param {Object} - An object containing the user id
+     * @returns {Promise} - A promise that resolves to a user object
+     * @throws {APIError} - Throws an APIError if an error occurs
+     */
     deleteUser: async ({
         params: { id },
         set,

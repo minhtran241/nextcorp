@@ -2,7 +2,11 @@ import { Elysia } from 'elysia';
 import { postsHandler } from '~handlers/PostsHandler';
 import { isAuthenticated, isAdmin } from '~middlewares/Auth';
 
-// Usage in route configuration
+/**
+ * configurePostsRoutes object
+ *
+ * This object configures the posts routes
+ */
 export const configurePostsRoutes = new Elysia({ prefix: '/post' })
     .get('/', postsHandler.getPosts)
     .post('/', postsHandler.createPost, {

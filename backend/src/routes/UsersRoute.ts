@@ -2,7 +2,11 @@ import { Elysia } from 'elysia';
 import { usersHandler } from '~handlers/UsersHandler';
 import { isAuthenticated, isAdmin } from '~middlewares/Auth';
 
-// Usage in route configuration
+/**
+ * configureUsersRoutes object
+ *
+ * This object configures the users routes
+ */
 export const configureUsersRoutes = new Elysia({ prefix: '/user' })
     .get('/', usersHandler.getUsers, {
         beforeHandle: [isAuthenticated, isAdmin],

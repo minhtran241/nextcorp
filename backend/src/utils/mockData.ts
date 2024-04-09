@@ -24,6 +24,13 @@ import MockUser from '~types/MockUser';
 //     return posts;
 // };
 
+/**
+ * generateMockPost function
+ *
+ * This function generates a mock post object
+ *
+ * @returns {MockPost} - A mock post object
+ */
 export const generateMockPost = (): MockPost => {
     return {
         title: faker.lorem.words(3),
@@ -38,6 +45,13 @@ export const generateMockPost = (): MockPost => {
     };
 };
 
+/**
+ * generateMockPostAPIPayload function
+ *
+ * This function generates a mock post API payload
+ *
+ * @returns {Object} - A mock post API payload
+ */
 export const generateMockPostAPIPayload = () => {
     return {
         title: faker.lorem.words(3),
@@ -49,6 +63,14 @@ export const generateMockPostAPIPayload = () => {
     };
 };
 
+/**
+ * generateMockUser function
+ *
+ * This function generates a mock user object
+ *
+ * @param {boolean} is_admin - A boolean value indicating if the user is an admin
+ * @returns {MockUser} - A mock user object
+ */
 export const generateMockUser = (is_admin: boolean): MockUser => {
     return {
         username: faker.internet.userName(),
@@ -59,6 +81,13 @@ export const generateMockUser = (is_admin: boolean): MockUser => {
     };
 };
 
+/**
+ * generateMockAuthAPIPayload function
+ *
+ * This function generates a mock auth API payload
+ *
+ * @returns {Object} - A mock auth API payload
+ */
 export const generateMockAuthAPIPayload = () => {
     return {
         username: faker.internet.userName(),
@@ -67,6 +96,13 @@ export const generateMockAuthAPIPayload = () => {
     };
 };
 
+/**
+ * generateMockUserAPIPayload function
+ *
+ * This function generates a mock user API payload
+ *
+ * @returns {Object} - A mock user API payload
+ */
 export const generateMockUserAPIPayload = () => {
     return {
         username: faker.internet.userName(),

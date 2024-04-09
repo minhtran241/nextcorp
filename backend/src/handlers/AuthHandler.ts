@@ -14,17 +14,32 @@ import { QueryResult } from 'pg';
 import User from '~types/User';
 import RefreshToken from '~types/RefreshToken';
 
+/**
+ * RegisterPayload
+ *
+ * This interface defines the payload for registering a user
+ */
 interface RegisterPayload {
     username: string;
     password: string;
     email: string;
 }
 
+/**
+ * LoginPayload
+ *
+ * This interface defines the payload for logging in a user
+ */
 interface LoginPayload {
     username: string;
     password: string;
 }
 
+/**
+ * AuthHandlerProps
+ *
+ * This interface defines the props for the AuthHandler
+ */
 interface AuthHandlerProps {
     jwt: any;
     refreshJwt: any;
@@ -33,6 +48,11 @@ interface AuthHandlerProps {
     set: any;
 }
 
+/**
+ * TokenHandlerProps
+ *
+ * This interface defines the props for the TokenHandler
+ */
 interface TokenHandlerProps {
     jwt: any;
     refreshJwt: any;
@@ -41,6 +61,11 @@ interface TokenHandlerProps {
     body: any;
 }
 
+/**
+ * Update the last login date of a user
+ *
+ * @param username
+ */
 const updateLastLogin = async (username: string) => {
     const lastLogin = new Date();
     await pool.query(
@@ -49,6 +74,12 @@ const updateLastLogin = async (username: string) => {
     );
 };
 
+/**
+ * Insert a refresh token into the database
+ *
+ * @param token
+ * @param username
+ */
 const insertRefreshToken = async (token: string, username: string) => {
     let userId = await pool.query(
         'SELECT id FROM public.users WHERE username = $1',
@@ -61,7 +92,25 @@ const insertRefreshToken = async (token: string, username: string) => {
     );
 };
 
+/**
+ * AuthHandler
+ *
+ * This class is used to handle authentication
+ *
+ * @param {any} jwt - The JWT instance
+ * @param {any} refreshJwt - The refresh JWT instance
+ * @param {any} body - The request body
+ * @param {any} setCookie - The set cookie function
+ * @param {any} set - The set function
+ */
 export const authHandler = {
+    /**
+     * Login a user
+     *
+     * @param {AuthHandlerProps} - The auth handler props
+     * @returns {Promise<ApiResponse>} - The response
+     * @throws {APIError} - If an error occurs
+     */
     login: async ({
         jwt,
         refreshJwt,
@@ -71,11 +120,6 @@ export const authHandler = {
     }: AuthHandlerProps): Promise<ApiResponse> => {
         try {
             const { username, password } = body as LoginPayload;
-            console.log(
-                pool.query('SELECT * FROM public.users WHERE username = $1', [
-                    username,
-                ])
-            );
             const { rows }: QueryResult<User> = await pool.query(
                 'SELECT * FROM public.users WHERE username = $1',
                 [username]
@@ -124,7 +168,7 @@ export const authHandler = {
             await insertRefreshToken(refreshToken, username);
             return response;
         } catch (error: any) {
-            console.log(error);
+            // console.log(error);
             throw new APIError(
                 error.statusCode || 500,
                 error.message || internalServerError
@@ -132,6 +176,13 @@ export const authHandler = {
         }
     },
 
+    /**
+     * Register a user
+     *
+     * @param {AuthHandlerProps} - The auth handler props
+     * @returns {Promise<ApiResponse>} - The response
+     * @throws {APIError} - If an error occurs
+     */
     register: async ({
         jwt,
         refreshJwt,
@@ -192,6 +243,13 @@ export const authHandler = {
         }
     },
 
+    /**
+     * Create tokens
+     *
+     * @param {AuthHandlerProps} - The auth handler props
+     * @returns {Promise<ApiResponse>} - The response
+     * @throws {APIError} - If an error occurs
+     */
     refreshToken: async ({
         jwt,
         refreshJwt,
@@ -234,6 +292,13 @@ export const authHandler = {
         }
     },
 
+    /**
+     * Revoke a refresh token
+     *
+     * @param {TokenHandlerProps} - The token handler props
+     * @returns {Promise<ApiResponse>} - The response
+     * @throws {APIError} - If an error occurs
+     */
     revokeRefreshToken: async ({
         refreshJwt,
         cookie: { refresh_token },

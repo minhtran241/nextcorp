@@ -8,6 +8,11 @@ import ApiResponse from '~types/APIResponse';
 
 const MAX_POSTS_FETCH: number = parseInt(process.env.MAX_POSTS_FETCH || '100');
 
+/**
+ * createPostPayload
+ *
+ * This interface defines the payload for creating a post
+ */
 interface createPostPayload {
     title: string;
     description: string;
@@ -17,7 +22,18 @@ interface createPostPayload {
     isPublished: boolean;
 }
 
+/**
+ * postsHandler
+ *
+ * This object contains methods to handle posts
+ */
 export const postsHandler = {
+    /**
+     * Get all posts
+     *
+     * @returns {Promise<QueryResult<any>>} - The posts
+     * @throws {APIError} - If an error occurs
+     */
     getPosts: async ({}) => {
         try {
             const client = await pool.connect();
@@ -37,6 +53,13 @@ export const postsHandler = {
         }
     },
 
+    /**
+     * Get a post by slug
+     *
+     * @param {slug} - The slug of the post
+     * @returns {Promise<QueryResult<any>>} - The post
+     * @throws {APIError} - If an error occurs
+     */
     getPost: async ({
         params: { slug },
         set,
@@ -62,6 +85,13 @@ export const postsHandler = {
         }
     },
 
+    /**
+     * Create a new post
+     *
+     * @param {createPostPayload} - The post payload
+     * @returns {Promise<ApiResponse>} - The response
+     * @throws {APIError} - If an error occurs
+     */
     createPost: async ({
         body: { title, description, content, thumbnail, userId, isPublished },
         set,
@@ -110,6 +140,13 @@ export const postsHandler = {
         }
     },
 
+    /**
+     * Update a post
+     *
+     * @param {createPostPayload} - The post payload
+     * @returns {Promise<ApiResponse>} - The response
+     * @throws {APIError} - If an error occurs
+     */
     deletePost: async ({
         params: { id },
         set,
